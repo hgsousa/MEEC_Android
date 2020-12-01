@@ -31,8 +31,8 @@ class ThirdActivity_register : AppCompatActivity() {
             Toast.makeText(this, "Password is not valid!", Toast.LENGTH_LONG).show()
             return
         }
-        else if(passwordText != comfirmedText) {
-            Toast.makeText(this, "Password is not valid!", Toast.LENGTH_LONG).show()
+        else if(passwordText == comfirmedText) {
+            Toast.makeText(this, "Passwords do not match!", Toast.LENGTH_LONG).show()
             return
         }
     }

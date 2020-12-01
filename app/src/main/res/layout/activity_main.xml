@@ -52,17 +52,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <EditText
-        android:id="@+id/mainPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:ems="10"
-        android:inputType="numberPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainEmailAddress" />
-
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="155dp"
@@ -85,6 +74,17 @@
         app:layout_constraintTop_toBottomOf="@+id/secondActivityRegister"
         app:layout_constraintVertical_bias="0.8"
         app:srcCompat="@drawable/ipca_logo" />
+
+    <EditText
+        android:id="@+id/mainPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainEmailAddress" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
