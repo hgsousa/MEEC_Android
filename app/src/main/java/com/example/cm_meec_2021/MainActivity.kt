@@ -31,6 +31,11 @@ class MainActivity : AppCompatActivity() {
 
         val intent = Intent(this, SecondActivity_login::class.java)
         intent.putExtra("email", emailText)
+
+        
+
+
+
         startActivity(intent)
     }
 
@@ -39,3 +44,5 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 }
+
+

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "849874364842",
+    "firebase_url": "https://meec-cm-database.firebaseio.com",
+    "project_id": "meec-cm-database",
+    "storage_bucket": "meec-cm-database.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:849874364842:android:498f6c8a38a63247d223d3",
+        "android_client_info": {
+          "package_name": "com.example.cm_meec_2021"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "849874364842-7iv80qk67ecrusclrabr7uib93dnd21k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHqShFDJI8FYzoMMb--13Aj5Np-0PFPGA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "849874364842-7iv80qk67ecrusclrabr7uib93dnd21k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
