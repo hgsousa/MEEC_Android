@@ -10,7 +10,7 @@ class SecondActivity_login : AppCompatActivity() {
         setContentView(R.layout.activity_second_login)
 
         val email = intent.getStringExtra("email")
-        val welcometv = findViewById<TextView>(R.id.secondActivityLogin)
+        val welcometv = findViewById<TextView>(R.id.main_button_login)
         welcometv.text = "Hello " + email
     }
 }

@@ -5,11 +5,34 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
 
 class ThirdActivity_register : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_third_register)
+
+        /*
+
+       NOT WORKINGGGGG
+
+        RegisterButton.setOnClickListener{
+            val emailText = RegisterEmailAddress.text.toString()
+            val passwordText = RegisterPassword.text.toString()
+
+            FirebaseAuth.getInstance().createUserWithEmailAndPassword(emailText, passwordText)
+                    .addOnCompleteListener{
+                        if (!it.isSuccessful){
+                            return@addOnCompleteListener
+                        }
+
+                    }
+
+        }
+
+
+        */
+
     }
 
     fun onClickRegisterButton(view: View){
