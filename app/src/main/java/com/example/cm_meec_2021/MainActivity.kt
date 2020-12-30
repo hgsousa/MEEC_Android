@@ -6,11 +6,16 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var auth: FirebaseAuth;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        auth = FirebaseAuth.getInstance()
     }
 
     fun onClickLoginButton(view: View){
@@ -38,4 +43,18 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, ThirdActivity_register::class.java)
         startActivity(intent)
     }
+    
+/*    fun createUserButton(email:String, password:String){
+
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener (this) { task ->
+
+                if(task.isSuccessful){
+                    val intent = Intent(this, SecondActivity_login::class.java)
+                    startActivity(intent)
+                }else{
+                    Toast.makeText(this, " Error! " +task.exception, Toast.LENGTH_LONG).show()
+                }
+            }
+    }*/
 }

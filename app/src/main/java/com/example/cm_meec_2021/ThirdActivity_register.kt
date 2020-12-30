@@ -1,39 +1,76 @@
 package com.example.cm_meec_2021
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 class ThirdActivity_register : AppCompatActivity() {
+
+    private lateinit var auth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_third_register)
+        auth = FirebaseAuth.getInstance();
+
     }
 
-    fun onClickRegisterButton(view: View){
+    fun onClickRegisterButton(view: View) {
         val nameEditText = findViewById<EditText>(R.id.RegisterNametag)
         val emailEditText = findViewById<EditText>(R.id.RegisterEmailAddress);
         val passwordEditText = findViewById<EditText>(R.id.RegisterPassword);
         val confirmedEditText = findViewById<EditText>(R.id.RegisterConfirmPassword);
 
-        val nameText = nameEditText.text.toString()
-        val emailText = emailEditText.text.toString()
-        val passwordText = passwordEditText.text.toString()
-        val comfirmedText = confirmedEditText.text.toString()
+        val name = nameEditText.text.toString()
+        val email = emailEditText.text.toString().trim { it <= ' '}
+        val password = passwordEditText.text.toString().trim { it <= ' '}
+        val confPass = confirmedEditText.text.toString().trim { it <= ' '}
 
-        if (!StringUtilis.validateEmail(emailText)) {
+        if (TextUtils.isEmpty(name)) {
+            Toast.makeText(this, "Name is not valid!", Toast.LENGTH_LONG).show()
+            return
+        }else if (!StringUtilis.validateEmail(email)) {
             Toast.makeText(this, "Email is not valid!", Toast.LENGTH_LONG).show()
             return
-        }
-        else if(!StringUtilis.validatePassword(passwordText)) {
-            Toast.makeText(this, "Password is not valid!", Toast.LENGTH_LONG).show()
+        } else if (!StringUtilis.validatePassword(password)) {
+            Toast.makeText(this, "Password is to short!", Toast.LENGTH_LONG).show()
             return
-        }
-        else if(passwordText == comfirmedText) {
+        } else if (password.toString() != confPass.toString()) {
             Toast.makeText(this, "Passwords do not match!", Toast.LENGTH_LONG).show()
             return
+        } else {
+            //after checking for a correct email and password
+            FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener { task ->
+
+                        //if registration successful
+                        if(task.isSuccessful){
+                            //Firebase registered user
+                            val firebaseUser: FirebaseUser = task.result!!.user!!
+
+                            Toast.makeText(this, "Registered Successfully",
+                                            Toast.LENGTH_SHORT).show()
+
+                            //Send the user to the *mainActivity* and close this one
+                            val intent = Intent(this, SecondActivity_login::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            intent.putExtra("user", firebaseUser.uid)
+                            intent.putExtra("email", email)
+                            startActivity(intent)
+                            finish()
+                        }
+                        else{
+                            //if registering wasn't successful show Error msgs
+                            Toast.makeText(this, task.exception!!.message.toString(),
+                                    Toast.LENGTH_SHORT).show()
+                        }
+
+                    }
         }
     }
 }
