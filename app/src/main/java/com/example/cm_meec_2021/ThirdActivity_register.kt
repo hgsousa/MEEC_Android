@@ -21,7 +21,7 @@ class ThirdActivity_register : AppCompatActivity() {
     }
 
     fun onClickRegisterButton(view: View) {
-        val nameEditText = findViewById<EditText>(R.id.RegisterNametag)
+        val nameEditText = findViewById<EditText>(R.id.RegisterName)
         val emailEditText = findViewById<EditText>(R.id.RegisterEmailAddress);
         val passwordEditText = findViewById<EditText>(R.id.RegisterPassword);
         val confirmedEditText = findViewById<EditText>(R.id.RegisterConfirmPassword);
@@ -32,16 +32,16 @@ class ThirdActivity_register : AppCompatActivity() {
         val confPass = confirmedEditText.text.toString().trim { it <= ' '}
 
         if (TextUtils.isEmpty(name)) {
-            Toast.makeText(this, "Name is not valid!", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Name is not valid!", Toast.LENGTH_SHORT).show()
             return
         }else if (!StringUtilis.validateEmail(email)) {
-            Toast.makeText(this, "Email is not valid!", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Email is not valid!", Toast.LENGTH_SHORT).show()
             return
         } else if (!StringUtilis.validatePassword(password)) {
-            Toast.makeText(this, "Password is to short!", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Password is to short!", Toast.LENGTH_SHORT).show()
             return
         } else if (password.toString() != confPass.toString()) {
-            Toast.makeText(this, "Passwords do not match!", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Passwords do not match!", Toast.LENGTH_SHORT).show()
             return
         } else {
             //after checking for a correct email and password
@@ -53,21 +53,29 @@ class ThirdActivity_register : AppCompatActivity() {
                             //Firebase registered user
                             val firebaseUser: FirebaseUser = task.result!!.user!!
 
-                            Toast.makeText(this, "Registered Successfully",
-                                            Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                    this,
+                                    "Registered Successfully",
+                                    Toast.LENGTH_SHORT
+                            ).show()
+
+                            /* --- o q nao entendo é como é q a data é guarda na conta do user e como a podemos ir buscar --- */
 
                             //Send the user to the *mainActivity* and close this one
-                            val intent = Intent(this, SecondActivity_login::class.java)
+                            val intent = Intent(this, SecondActivity_login::class.java)             //precisa de ser alterado pra enviar o user pro login e entao se ele quiser entrar no *mainactivity*
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                            intent.putExtra("user", firebaseUser.uid)
-                            intent.putExtra("email", email)
+                            intent.putExtra("user_id", firebaseUser.uid)
+                            intent.putExtra("email_id", email)
                             startActivity(intent)
                             finish()
                         }
                         else{
-                            //if registering wasn't successful show Error msgs
-                            Toast.makeText(this, task.exception!!.message.toString(),
-                                    Toast.LENGTH_SHORT).show()
+                            //if registering isn't successful show Error messages
+                            Toast.makeText(
+                                    this,
+                                    task.exception!!.message.toString(),
+                                    Toast.LENGTH_SHORT
+                            ).show()
                         }
 
                     }
