@@ -20,6 +20,7 @@ class ThirdActivity_register : AppCompatActivity() {
 
     }
 
+
     fun onClickRegisterButton(view: View) {
         val nameEditText = findViewById<EditText>(R.id.RegisterName)
         val emailEditText = findViewById<EditText>(R.id.RegisterEmailAddress);
