@@ -15,11 +15,18 @@ class SecondActivity_login : AppCompatActivity() {
         setContentView(R.layout.activity_second_login)
         auth = FirebaseAuth.getInstance();
 
-
+        //normal login
         val email = intent.getStringExtra("email_id")
         val name = intent.getStringExtra("user_id")
         val welcometv = findViewById<TextView>(R.id.secondActivity_name)
         welcometv.text = "Hello  :: $email \nuser :: $name"
+
+        //google login
+        val currentUser = auth.currentUser
+        val emailgoogle = currentUser?.email
+        val namegoogle = currentUser?.displayName
+        welcometv.text = "Hello  :: $emailgoogle \nuser :: $namegoogle"
+
     }
 
     //Sign out

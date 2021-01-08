@@ -49,6 +49,9 @@ dependencies {  //talvez falte google analytics
 
     implementation 'com.google.firebase:firebase-auth-ktx'            //firebase
 
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'  //google
+
+
 }
 
 apply plugin: 'com.google.gms.google-services'     //firebase
