@@ -46,13 +46,13 @@ class ThirdActivity_register : AppCompatActivity() {
             return
         } else {
             //after checking for a correct email and password
-            FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
+            auth.createUserWithEmailAndPassword(email, password)    //FirebaseAuth.getInstance()
                     .addOnCompleteListener { task ->
 
                         //if registration successful
                         if(task.isSuccessful){
                             //Firebase registered user
-                            val firebaseUser: FirebaseUser = task.result!!.user!!
+                            //val firebaseUser: FirebaseUser = task.result!!.user!!
 
                             Toast.makeText(
                                     this,
@@ -63,11 +63,12 @@ class ThirdActivity_register : AppCompatActivity() {
                             /* --- o q nao entendo é como é q a data é guarda na conta do user e como a podemos ir buscar --- */
 
                             //Send the user to the *mainActivity* and close this one
-                            val intent = Intent(this, SecondActivity_login::class.java)             //precisa de ser alterado pra enviar o user pro login e entao se ele quiser entrar no *mainactivity*
+                            val intent = Intent(this, MainActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                            intent.putExtra("user_id", firebaseUser.uid)
+                            //intent.putExtra("user_id", firebaseUser.uid)
                             intent.putExtra("email_id", email)
                             startActivity(intent)
+                            auth.signOut()      //need so that the user isn´t signed in when the account is created
                             finish()
                         }
                         else{

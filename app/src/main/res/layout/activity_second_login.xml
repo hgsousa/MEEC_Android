@@ -20,11 +20,22 @@
         android:id="@+id/SignOutButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:onClick="onClickSignOutButton"
         android:text="Logout"
-        tools:layout_editor_absoluteX="153dp"
-        tools:layout_editor_absoluteY="211dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/secondActivity_name" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

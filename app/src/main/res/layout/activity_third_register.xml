@@ -110,26 +110,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/RegisterConfirmPassword_tv" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="OR"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/RegisterButton" />
-
-    <ImageButton
-        android:id="@+id/RegisterImgButton"
-        android:layout_width="262dp"
-        android:layout_height="55dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.171"
-        app:srcCompat="@drawable/continuegoogle" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

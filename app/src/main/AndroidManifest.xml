@@ -4,19 +4,27 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/eec"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/eec"
         android:supportsRtl="true"
         android:theme="@style/Theme.CM_MEEC_2021">
-        <activity android:name=".ThirdActivity_register"></activity>
-        <activity android:name=".SecondActivity_login" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ThirdActivity_register"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SecondActivity_login"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 
