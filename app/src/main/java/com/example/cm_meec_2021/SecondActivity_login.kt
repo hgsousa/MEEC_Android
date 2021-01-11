@@ -50,4 +50,9 @@ class SecondActivity_login : AppCompatActivity() {
         //this 3 lines above can be substituted with onBackPressed() if we want to keep the info
         finish()
     }
+
+    fun onClickRecordActivity (view: View){
+        val intent = Intent(this, RecordActivity::class.java)
+        startActivity(intent)
+    }
 }
