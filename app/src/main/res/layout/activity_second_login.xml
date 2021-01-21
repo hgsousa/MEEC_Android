@@ -4,7 +4,119 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".SecondActivity_login">
+
+
+    //////////////////////////testing real time database
+
+    <EditText
+        android:id="@+id/set_edittext"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="180dp"
+        android:hint="Age"
+        app:layout_constraintEnd_toStartOf="@+id/set_button"
+        app:layout_constraintHorizontal_bias="0.324"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/set_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="180dp"
+        android:layout_marginEnd="28dp"
+        android:onClick="onclickset"
+        android:text="Set"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/update_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="28dp"
+        android:onClick="onClickButtonUpdate"
+        android:text="Update"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/set_button" />
+
+    <EditText
+        android:id="@+id/update_editText"
+        android:layout_width="199dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="Gender"
+        app:layout_constraintEnd_toStartOf="@+id/update_button"
+        app:layout_constraintHorizontal_bias="0.337"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/set_edittext" />
+
+
+    <Button
+        android:id="@+id/delete_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="96dp"
+        android:onClick="onClickButtonDelete"
+        android:text="Delete"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.904"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <Button
+        android:id="@+id/read_single_button"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="22dp"
+        android:onClick="onClickButtonReadSingle"
+        android:text="Read single"
+        android:textSize="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/read_observe_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/read_single_textView"
+        app:layout_constraintTop_toBottomOf="@+id/SignOutButton" />
+
+    <Button
+        android:id="@+id/read_observe_button"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="193dp"
+        android:onClick="onClickButtonReadObserve"
+        android:text="Read Observe"
+        android:textSize="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/read_observe_textView"
+        app:layout_constraintTop_toBottomOf="@+id/read_single_button" />
+
+    <TextView
+        android:id="@+id/read_observe_textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="20dp"
+        android:hint="Text"
+        app:layout_constraintBaseline_toBaselineOf="@+id/read_observe_button"
+        app:layout_constraintEnd_toStartOf="@+id/read_observe_button"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/read_single_textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="20dp"
+        android:hint="Text"
+        app:layout_constraintBaseline_toBaselineOf="@+id/read_single_button"
+        app:layout_constraintEnd_toStartOf="@+id/read_single_button"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/secondActivity_name"
@@ -20,10 +132,12 @@
         android:id="@+id/SignOutButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="28dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="298dp"
         android:onClick="onClickSignOutButton"
         android:text="Logout"
+        app:layout_constraintBottom_toTopOf="@+id/read_single_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
@@ -41,12 +155,12 @@
         android:id="@+id/buttonRecord"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="260dp"
+        android:layout_marginBottom="16dp"
         android:onClick="onClickRecordActivity"
         android:text="Record Mode"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent" />
 
 

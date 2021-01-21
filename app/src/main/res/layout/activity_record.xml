@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:text="Audio Recorder"
+        android:textAlignment="center"
         android:textSize="25dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,25 +21,40 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <Button
+        android:id="@+id/buttonPlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="20dp"
+        android:background="@color/colorGreen"
+        android:onClick="onCLickButtonPlay"
+        android:text="PLAY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="OnClick" />
+
     <Button
         android:id="@+id/buttonStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="13dp"
+        android:layout_marginTop="100dp"
         android:background="@color/black"
         android:onClick="onClickButtonStart"
         android:text="START"
-        app:layout_constraintBaseline_toBaselineOf="@+id/buttonStop"
         app:layout_constraintEnd_toStartOf="@+id/buttonStop"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="OnClick" />
 
     <Button
         android:id="@+id/buttonStop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="144dp"
-        android:layout_marginEnd="13dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="30dp"
         android:background="@color/black"
         android:onClick="onClickButtonStop"
         android:text="STOP"
@@ -47,45 +63,70 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="OnClick" />
 
-    <Button
-        android:id="@+id/buttonPlay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="1dp"
-        android:background="@color/colorGreen"
-        android:onClick="onCLickButtonPlay"
-        android:text="PLAY"
-        app:layout_constraintBaseline_toBaselineOf="@+id/buttonStop"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/buttonStop"
-        tools:ignore="OnClick" />
-
-    <com.gauravk.audiovisualizer.visualizer.BarVisualizer
-        android:id="@+id/aVisualizer"
-        android:layout_width="412dp"
-        android:layout_height="253dp"
-        app:avColor="@color/av_dark_blue"
-        app:avDensity="0.8"
-        app:avSpeed="normal"
-        app:avType="fill"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />v
-
     <TextView
         android:id="@+id/timerView"
-        android:layout_width="170dp"
-        android:layout_height="51dp"
-        android:layout_marginBottom="512dp"
+        android:layout_width="181dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="180dp"
         android:text=""
         android:textAlignment="center"
         android:textSize="20dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/aVisualizer"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonUpload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="336dp"
+        android:background="@color/colorGreen"
+        android:onClick="onCLickButtonUpload"
+        android:text="Upload"
+        app:layout_constraintEnd_toStartOf="@+id/buttonDowload"
+        app:layout_constraintHorizontal_bias="0.057"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="OnClick" />
+
+    <TextView
+        android:id="@+id/delete_filename_edittext"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="172dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttonDowload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="336dp"
+        android:layout_marginEnd="72dp"
+        android:background="@color/colorGreen"
+        android:onClick="onCLickButtonDownload"
+        android:text="Dowload"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="OnClick" />
+
+    <Button
+        android:id="@+id/buttonDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="152dp"
+        android:background="@color/colorGreen"
+        android:onClick="onCLickButtonDelete"
+        android:text="Delete"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.588"
+        app:layout_constraintStart_toEndOf="@+id/delete_filename_edittext"
+        tools:ignore="OnClick" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
