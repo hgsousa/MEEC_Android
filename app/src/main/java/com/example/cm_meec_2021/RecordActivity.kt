@@ -1,12 +1,20 @@
 package com.example.cm_meec_2021
 
 import android.Manifest
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.Uri
 import android.net.UrlQuerySanitizer
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Environment
@@ -18,6 +26,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.example.cm_meec_2021.R
 import com.gauravk.audiovisualizer.visualizer.BarVisualizer
 import com.google.firebase.auth.FirebaseAuth
@@ -31,17 +41,22 @@ import java.util.*
 
 class RecordActivity : AppCompatActivity() {
     private lateinit var recordAudio : MediaRecorder
+    private lateinit var mStorage: StorageReference;   //Firebase storage
+
+    private val CHANNEL_ID = "channel_id_example"
+    private val notificationId = 101
+    lateinit var buttonNotification:Button
+
     lateinit var buttonStart:Button
     lateinit var buttonStop:Button
     lateinit var buttonPlay:Button
     lateinit var buttonUpload:Button
 
+
+
     lateinit var  soundUri:Uri
-
-    private lateinit var mStorage: StorageReference;   //Firebase storage
-
     val AUDIO = 0
-    val GALLERY = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +66,7 @@ class RecordActivity : AppCompatActivity() {
         buttonStop = findViewById<Button>(R.id.buttonStop)
         buttonPlay = findViewById<Button>(R.id.buttonPlay)
         buttonUpload = findViewById<Button>(R.id.buttonUpload)
+        buttonNotification = findViewById<Button>(R.id.buttonNotification)
 
         var timerView = findViewById<TextView>(R.id.timerView)
 
@@ -110,24 +126,54 @@ class RecordActivity : AppCompatActivity() {
             playAudio.start()
         }
 
-
-        buttonUpload.setOnClickListener {
-
+        createNotificationChannel()
+        buttonNotification.setOnClickListener{
+            sendNotification()
         }
+    }
 
+    private fun createNotificationChannel(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            val name = "Notification title"
+            val descriptionText = "Notification description"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNEL_ID,name,importance).apply {
+                description = descriptionText
+            }
+            val notificationManager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
 
+    private fun sendNotification(){
+        val intent = Intent(this,RecordActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(this,0,intent,0)
+        //val bitmap: Bitmap = BitmapFactory.decodeResource(applicationContext.resources, R.drawable.ipca_logo)
 
+        val builder = NotificationCompat.Builder(this,CHANNEL_ID)
+            .setSmallIcon(R.drawable.eec)
+            .setContentTitle("titulo fixe")
+            .setContentText("Descrição fixe")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(pendingIntent)
 
+        with(NotificationManagerCompat.from(this)){
+            notify(notificationId,builder.build())
+        }
     }
 
 
-    fun openAlbum(view: View){
+
+
+
+/*
+    fun openAlbum(view: View) {
         var intent = Intent(Intent.ACTION_PICK)
         intent.setType("audio/*")
-        startActivityForResult(intent,AUDIO)
-
+        startActivityForResult(intent, AUDIO)
     }
-
 
 
     fun uploadAudio(soundUri: Uri){
@@ -151,10 +197,13 @@ class RecordActivity : AppCompatActivity() {
     }
 
 
-
     fun onClickButtonDownload(){
 
     }
+
+    */
+ */
+
 
 
 
@@ -165,8 +214,21 @@ class RecordActivity : AppCompatActivity() {
             buttonPlay.isEnabled = true
     }
 
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

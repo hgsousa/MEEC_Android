@@ -138,7 +138,7 @@ class SecondActivity_login : AppCompatActivity() {
         database.reference
             .child("Users")
             .child("$id")
-            .addListenerForSingleValueEvent(object :ValueEventListener{
+            .addValueEventListener(object :ValueEventListener{
                 override fun onCancelled(p0: DatabaseError) {
 
                 }

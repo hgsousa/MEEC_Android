@@ -88,6 +88,7 @@ class MainActivity : AppCompatActivity() {
 
                 // ...
             }
+
     }
 
     //Sign in with email account

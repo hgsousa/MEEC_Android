@@ -13,6 +13,7 @@
         android:roundIcon="@drawable/eec"
         android:supportsRtl="true"
         android:theme="@style/Theme.CM_MEEC_2021">
+        <activity android:name=".AudioListActivity"></activity>
         <activity android:name=".RecordActivity" />
         <activity android:name=".StartActivity">
             <intent-filter>
