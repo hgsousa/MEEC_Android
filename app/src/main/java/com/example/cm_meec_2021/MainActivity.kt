@@ -1,151 +1,207 @@
 package com.example.cm_meec_2021
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.database.*
+
 
 class MainActivity : AppCompatActivity() {
 
-    companion object{
-        private const val RC_SIGN_IN = 120
-    }
-    private lateinit var auth: FirebaseAuth;
-    private lateinit var googleSignInClient: GoogleSignInClient;
+    private lateinit var auth: FirebaseAuth
+    private lateinit var database: FirebaseDatabase  //var map = mutableMapOf<String,Any>()
+    private lateinit var reference: DatabaseReference
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Configure Google Sign In
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build()
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
+        database = FirebaseDatabase.getInstance()
+        reference = database.getReference("Users")
+        auth = FirebaseAuth.getInstance();
+        val currentUser = auth.currentUser
 
-        auth = FirebaseAuth.getInstance()
-
-        //get email from register
-        val emailReg = intent.getStringExtra("email_id")
-    }
-
-    //Sign in with Google
-    fun onClickLoginGoogleButton(view: View) {
-        val signInIntent = googleSignInClient.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            val exception = task.exception
-            if(task.isSuccessful) {
-                try {
-                    // Google Sign In was successful, authenticate with Firebase
-                    val account = task.getResult(ApiException::class.java)!!
-                    Log.d("SignInWithGoogle", "firebaseAuthWithGoogle:" + account.id)
-                    firebaseAuthWithGoogle(account.idToken!!)
-                } catch (e: ApiException) {
-                    // Google Sign In failed, update UI appropriately
-                    Log.w("SignInWithGoogle", "Google sign in failed", e)
-                }
-            }else{
-                //Toast.makeText(this, exception.toString(), Toast.LENGTH_LONG).show()
-                Log.w("SignInWithGoogle", exception.toString())
-            }
-        }
-    }
-    private fun firebaseAuthWithGoogle(idToken: String) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d("SignInWithGoogle", "signInWithCredential:success")
-                    intent = Intent(this, SecondActivity_login::class.java)
-                    startActivity(intent)
-                    finish()
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w("SignInWithGoogle", "signInWithCredential:failure", task.exception)
-                    // ...
-                }
-
-                // ...
-            }
-    }
-
-    //Sign in with email account
-    fun onClickLoginButton(view: View){
-        val emailEditText = findViewById<EditText>(R.id.mainEmailAddress);
-        val passwordEditText = findViewById<EditText>(R.id.mainPassword);
-
-        val email = emailEditText.text.toString()
-        val password = passwordEditText.text.toString()
-
-        if (!StringUtilis.validateEmail(email)) {
-            Toast.makeText(this, "Email is not valid!", Toast.LENGTH_LONG).show()
-            return
-        }
-        else if(!StringUtilis.validatePassword(password)) {
-            Toast.makeText(this, "Password is not valid!", Toast.LENGTH_LONG).show()
-            return
-        }               //confirmar se está a funcionar (se der mal o q aconetece?)
-        else {
+        //sign in with google
+        val googleAuth=findViewById<TextView>(R.id.textView2)
+        val id_goo = currentUser?.uid
+        val name_goo = currentUser?.displayName
+        val email_goo = currentUser?.email
+        googleAuth.text = "user id :: $id_goo\n"+"email  :: $email_goo \n" + "name :: $name_goo";
 
 
-        //after checking for a correct email and password
-        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener { task ->
+        //sign in w email
+        val email = intent.getStringExtra("email_id")
+        val name = intent.getStringExtra("user_id")
+        val welcometv = findViewById<TextView>(R.id.secondActivity_name)
+        welcometv.text = "Hello  :: $email \nuser :: $name"
 
-                    //if registration successful
-                    if(task.isSuccessful){
+//tentativa de ler os valores e colocálos nas text views ao abrir a activity
+    /*    var updateEditTextString = findViewById<EditText>(R.id.update_editText).text.toString()
+        var setEditTextString = findViewById<EditText>(R.id.set_edittext).text.toString()
+        val id=auth.currentUser?.uid
+        var map = mutableMapOf<String,Any>()
+        if(map["name"]!=null||map["age"]!=null) {
+            map["name"] = updateEditTextString
+            map["age"] = setEditTextString
 
-                        Toast.makeText(
-                                this,
-                                "Logged in Successfully",
-                                Toast.LENGTH_SHORT
-                        ).show()
+            FirebaseDatabase.getInstance().reference
+                .child("Users")
+                .child("$id")
+                .setValue(map)
 
-                        //Send the user to the *main Activity* (SecondActivity_login) and close this one
-                        val intent = Intent(this, SecondActivity_login::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        intent.putExtra("user_id", auth.currentUser!!.uid) //mudei o FirebaseAuth.getInstance()
-                        intent.putExtra("email_id", email)
-                        startActivity(intent)
-                        finish()
+            var readObserve_editText = this.findViewById<TextView>(R.id.read_observe_textView)
+            //val id=auth.currentUser?.uid
+            database.reference
+                .child("Users")
+                .child("$id")
+                .addValueEventListener(object :ValueEventListener{
+                    override fun onCancelled(p0: DatabaseError) {
+
                     }
-                    else{
-                        //if Logging in isn't successful show Error messages
-                        Toast.makeText(
-                                this,
-                                task.exception!!.message.toString(),
-                                Toast.LENGTH_SHORT
-                        ).show()
+
+                    override fun onDataChange(p0: DataSnapshot) {
+
+                        var map = p0.value as Map<String,Any>
+                        if(map!=null) {
+                            readObserve_editText.text = map["age"].toString()
+                        }else{
+                            Log.d("teste", "no user found")
+                        }
+
                     }
-                }
+                })
         }
+        */
+        var readSingle_editText = findViewById<TextView>(R.id.read_single_textView)
+        val id=auth.currentUser?.uid
+        database.reference
+            .child("Users")
+            //.child("$id")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+
+                }
+                override fun onDataChange(p0: DataSnapshot) {
+
+                    var map = p0.value as Map<String,Any>
+                    readSingle_editText.text = map["age"].toString()
+
+                }
+            })
     }
 
-    //Register with email account
-    fun onClickRegisterButton(view: View){
-        val intent = Intent(this, ThirdActivity_register::class.java)
+
+    fun onClickRecordActivity (view: View){
+        val intent = Intent(this, RecordActivity::class.java)
         startActivity(intent)
+    }
+
+
+    //Sign out
+    fun onClickSignOutButton(view: View) {
+        //Sign out google
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
+        val googleSignInClient = GoogleSignIn.getClient(this, gso)
+        googleSignInClient.signOut()
+
+        //Sign out facebook
+        LoginManager.getInstance().logOut()
+
+        //Sign out email account
+        auth.signOut()
+        val intent = Intent(this, SecondActivity_login::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        //this 3 lines above can be substituted with onBackPressed() if we want to keep the info
+        finish()
+
+    }
+
+    //real time database
+    fun onClickButtonSet(view:View){
+        var updateEditTextString = findViewById<EditText>(R.id.update_editText).text.toString()
+        var setEditTextString = findViewById<EditText>(R.id.set_edittext).text.toString()
+        val id=auth.currentUser?.uid
+        var map = mutableMapOf<String,Any>()
+        map["name"] = updateEditTextString
+        map["age"] = setEditTextString
+
+        FirebaseDatabase.getInstance().reference
+            .child("Users")
+            .child("$id")
+            .setValue(map)
+    }
+
+    fun onClickButtonUpdate(view: View){
+        var updateEditTextString = findViewById<EditText>(R.id.update_editText).text.toString()
+        var setEditTextString = findViewById<EditText>(R.id.set_edittext).text.toString()
+        val id=auth.currentUser?.uid
+        var map = mutableMapOf<String,Any>()
+        map["name"] = updateEditTextString
+        map["age"] = setEditTextString
+
+        FirebaseDatabase.getInstance().reference
+            .child("Users")
+            .child("$id")
+            .updateChildren(map)
+    }
+
+    fun onClickButtonDelete(view: View){
+        val id=auth.currentUser?.uid
+        FirebaseDatabase.getInstance().reference
+            .child("Users")
+            .child("$id")
+            .child("name")
+            .removeValue()
+    }
+
+    fun onClickButtonReadSingle(view: View){
+        var readSingle_editText = findViewById<TextView>(R.id.read_single_textView)
+        val id=auth.currentUser?.uid
+        database.reference
+            .child("Users")
+            .child("$id")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+
+                    var map = p0.value as Map<String,Any>
+                    readSingle_editText.text = map["age"].toString()
+
+                }
+            })
+    }
+
+    fun onClickButtonReadObserve(view: View){
+        var readObserve_editText = this.findViewById<TextView>(R.id.read_observe_textView)
+        val id=auth.currentUser?.uid
+        database.reference
+            .child("Users")
+            .child("$id")
+            .addValueEventListener(object :ValueEventListener{
+                override fun onCancelled(p0: DatabaseError) {
+
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+
+                    var map = p0.value as Map<String,Any>
+                    readObserve_editText.text = map["age"].toString()
+
+                }
+            })
     }
 
 }
