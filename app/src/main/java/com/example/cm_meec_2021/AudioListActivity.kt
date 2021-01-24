@@ -1,6 +1,7 @@
 package com.example.cm_meec_2021
 
 import android.app.ActivityManager
+import android.app.PictureInPictureParams
 import android.content.Intent
 import android.icu.text.CaseMap
 import androidx.appcompat.app.AppCompatActivity
@@ -8,10 +9,7 @@ import android.os.Bundle
 import android.os.ParcelFileDescriptor
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import android.widget.Toast
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -27,8 +25,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class AudioListActivity : AppCompatActivity() {
-    lateinit var rv_recyclerView:RecyclerView
+    private lateinit var auth: FirebaseAuth
 
+    lateinit var rv_recyclerView:RecyclerView
+    lateinit var nameProfile_textView:TextView
     lateinit var swipe: SwipeRefreshLayout
     lateinit var fabRecord: FloatingActionButtonExpandable
 
@@ -40,8 +40,25 @@ class AudioListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audio_list)
 
-        rv_recyclerView = findViewById<RecyclerView>(R.id.rv_recyclerView)
+        /*-------------welcome (name)  -------------------------------------------------------------------------*/
 
+        auth = FirebaseAuth.getInstance();
+        val currentUser = auth.currentUser
+        nameProfile_textView = findViewById(R.id.nameProfile_textView)
+
+        val nameGoogle = currentUser?.displayName
+
+        val nameEmail = intent.getStringExtra("email_id")
+
+        if (nameGoogle == null ){
+            nameProfile_textView.text = "Welcome, ${nameEmail}"
+        }else{
+            nameProfile_textView.text = "Welcome, ${nameGoogle}"
+        }
+
+        /*--------------------------------------------------------------------------------------*/
+
+        rv_recyclerView = findViewById<RecyclerView>(R.id.rv_recyclerView)
         //refreshApp()
         postToList()
 
@@ -53,7 +70,6 @@ class AudioListActivity : AppCompatActivity() {
             overridePendingTransition(0, 0);
 
         }
-
 
 
         rv_recyclerView.layoutManager = LinearLayoutManager(this)
