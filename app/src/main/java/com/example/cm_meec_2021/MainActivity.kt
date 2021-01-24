@@ -124,7 +124,7 @@ class MainActivity : AppCompatActivity() {
                         ).show()
 
                         //Send the user to the *main Activity* (SecondActivity_login) and close this one
-                        val intent = Intent(this, SecondActivity_login::class.java)
+                        val intent = Intent(this, AudioListActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         intent.putExtra("user_id", auth.currentUser!!.uid) //mudei o FirebaseAuth.getInstance()
                         intent.putExtra("email_id", email)
