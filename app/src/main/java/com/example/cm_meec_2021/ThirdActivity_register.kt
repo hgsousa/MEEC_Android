@@ -1,7 +1,6 @@
 package com.example.cm_meec_2021
 
 import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
@@ -17,7 +16,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.ktx.Firebase
 
 class ThirdActivity_register : AppCompatActivity() {
     companion object{
@@ -178,7 +176,7 @@ class ThirdActivity_register : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("ThirdActivity_register", "signInWithCredential:success")
-                    val intent = Intent(this,MainActivity::class.java)
+                    val intent = Intent(this,ProfileActivity::class.java)
                     startActivity(intent)
                 } else {
                     // If sign in fails, display a message to the user.

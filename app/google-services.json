@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "644455601231",
+    "firebase_url": "https://tpandroid-b4419-default-rtdb.firebaseio.com",
+    "project_id": "tpandroid-b4419",
+    "storage_bucket": "tpandroid-b4419.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:644455601231:android:0b6ced41f620053e8d063a",
+        "android_client_info": {
+          "package_name": "com.example.cm_meec_2021"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "644455601231-tiokrvahjqembq1c1rh4co1och76lm87.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cm_meec_2021",
+            "certificate_hash": "3ab9e57df60184b6967bd0b623bd1e0256e58922"
+          }
+        },
+        {
+          "client_id": "644455601231-019v3ubmeeru97ke7ubh2rjkr6iumkhs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7RFeIeYgxSKecMeOCHY-CiPmXYQFb33o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "644455601231-019v3ubmeeru97ke7ubh2rjkr6iumkhs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

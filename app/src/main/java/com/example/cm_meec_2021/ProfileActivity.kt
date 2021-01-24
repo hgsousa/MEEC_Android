@@ -15,7 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
 
-class MainActivity : AppCompatActivity() {
+class ProfileActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var database: FirebaseDatabase  //var map = mutableMapOf<String,Any>()
@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_profile)
 
         database = FirebaseDatabase.getInstance()
         reference = database.getReference("Users")
