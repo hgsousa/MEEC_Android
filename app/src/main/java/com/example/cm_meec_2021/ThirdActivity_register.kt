@@ -3,7 +3,6 @@ package com.example.cm_meec_2021
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
@@ -14,8 +13,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.database.FirebaseDatabase
 
 class ThirdActivity_register : AppCompatActivity() {
     companion object{
@@ -39,11 +39,6 @@ class ThirdActivity_register : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance();
 
-        /* erro registerImgbutton
-        RegisterImgButton.setOnClickListener{
-            signIn()
-        }
-         */
     }
 
 
@@ -53,12 +48,20 @@ class ThirdActivity_register : AppCompatActivity() {
         val emailEditText = findViewById<EditText>(R.id.RegisterEmailAddress);
         val passwordEditText = findViewById<EditText>(R.id.RegisterPassword);
         val confirmedEditText = findViewById<EditText>(R.id.RegisterConfirmPassword);
+        val companyEditText = findViewById<EditText>(R.id.RegisterCompany)
+        val companyIdEditText = findViewById<EditText>(R.id.RegisterCompanyId)
+        val phoneEditText = findViewById<EditText>(R.id.RegisterPhone)
 
         val name = nameEditText.text.toString()
         val email = emailEditText.text.toString().trim { it <= ' '}
         val password = passwordEditText.text.toString().trim { it <= ' '}
         val confPass = confirmedEditText.text.toString().trim { it <= ' '}
+        val CID = companyIdEditText.text.toString()
+        val company = companyEditText.text.toString()
+        val phone = phoneEditText.text.toString()
 
+
+        //Necessary Info
         if (TextUtils.isEmpty(name)) {
             Toast.makeText(this, "Name is not valid!", Toast.LENGTH_SHORT).show()
             return
@@ -72,30 +75,54 @@ class ThirdActivity_register : AppCompatActivity() {
             Toast.makeText(this, "Passwords do not match!", Toast.LENGTH_SHORT).show()
             return
         } else {
+            Log.d("teste", "else-----------")
             //after checking for a correct email and password
             auth.createUserWithEmailAndPassword(email, password)    //FirebaseAuth.getInstance()
                     .addOnCompleteListener { task ->
-
+                        Log.d("teste", "entrou na task de register")
                         //if registration successful
                         if(task.isSuccessful){
-                            //Firebase registered user
-                            //val firebaseUser: FirebaseUser = task.result!!.user!!
+                            Log.d("teste", "task.successful")
+                            //Save user Info
+                            val user = auth.currentUser
+                            val id = user?.uid
+                            var map = mutableMapOf<String,Any>()
+                            check4blank(map, "phone", phone)
+                            check4blank(map, "companyId", CID)
+                            check4blank(map, "company", company)
+                            /*map["phone"] = phone
+                            map["companyId"] = CID
+                            map["company"] = company*/
 
+                            val profileUpdates = userProfileChangeRequest {
+                                displayName = name
+                            }
+                            user!!.updateProfile(profileUpdates).addOnCompleteListener { nameTask ->
+                                if ((nameTask.isSuccessful)) {
+                                    Log.d("teste", "update profile do firebase displayname")
+                                }
+                            }
+
+                            FirebaseDatabase.getInstance().reference
+                                    .child("Users")
+                                    .child("$id")
+                                    .child("Info")
+                                    .updateChildren(map)
+
+                            //Successful toast
                             Toast.makeText(
                                     this,
                                     "Registered Successfully",
                                     Toast.LENGTH_SHORT
                             ).show()
 
-                            /* --- o q nao entendo é como é q a data é guarda na conta do user e como a podemos ir buscar --- */
-
-                            //Send the user to the *mainActivity* and close this one
-                            val intent = Intent(this, MainActivity::class.java)
+                            //Send the user to the mainActivity and close this one
+                            val intent = Intent(this, SecondActivity_login::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             //intent.putExtra("user_id", firebaseUser.uid)
                             intent.putExtra("email_id", email)
                             startActivity(intent)
-                            auth.signOut()      //need so that the user isn´t signed in when the account is created
+                            auth.signOut()      //needed so that the user isn´t signed in when the account is created
                             finish()
                         }
                         else{
@@ -111,16 +138,10 @@ class ThirdActivity_register : AppCompatActivity() {
         }
     }
 
-
-    fun onClickRegisterImgButton(view: View) {
-        signIn()
-    }
-
-
-    //login using google
-    private fun signIn() {
-        val signInIntent = googleLogInClient.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
+    private fun check4blank( map: MutableMap<String, Any>, key:String, info:String){
+        if( info.trim { it <= ' '} != ""){
+            map[key] = info
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -155,7 +176,7 @@ class ThirdActivity_register : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("ThirdActivity_register", "signInWithCredential:success")
-                    val intent = Intent(this,SecondActivity_login::class.java)
+                    val intent = Intent(this,ProfileActivity::class.java)
                     startActivity(intent)
                 } else {
                     // If sign in fails, display a message to the user.
