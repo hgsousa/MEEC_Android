@@ -44,59 +44,64 @@ class MainActivity : AppCompatActivity() {
         val welcometv = findViewById<TextView>(R.id.secondActivity_name)
         welcometv.text = "Hello  :: $email \nuser :: $name"
 
-//tentativa de ler os valores e colocálos nas text views ao abrir a activity
-    /*    var updateEditTextString = findViewById<EditText>(R.id.update_editText).text.toString()
-        var setEditTextString = findViewById<EditText>(R.id.set_edittext).text.toString()
+
+        // Get user Info
+     /*   var updateEditTextString = findViewById<EditText>(R.id.nameText).text.toString()
+        var setEditTextString = findViewById<EditText>(R.id.ageText).text.toString()
         val id=auth.currentUser?.uid
         var map = mutableMapOf<String,Any>()
-        if(map["name"]!=null||map["age"]!=null) {
-            map["name"] = updateEditTextString
-            map["age"] = setEditTextString
+        map["name"] = updateEditTextString //name da firebase
+        map["age"] = setEditTextString
+        map["company"] = "IPCA"
+        //usar ainda phone number genero
 
-            FirebaseDatabase.getInstance().reference
+        FirebaseDatabase.getInstance().reference
                 .child("Users")
                 .child("$id")
-                .setValue(map)
+                .child("Info")
+                .updateChildren(map)*/
 
-            var readObserve_editText = this.findViewById<TextView>(R.id.read_observe_textView)
-            //val id=auth.currentUser?.uid
-            database.reference
-                .child("Users")
-                .child("$id")
-                .addValueEventListener(object :ValueEventListener{
+        var phoneText = findViewById<EditText>(R.id.phoneText)
+        var companyIdText = findViewById<EditText>(R.id.companyIdText)
+        var companyText = findViewById<EditText>(R.id.companyText)
+        val id=auth.currentUser?.uid
+        var info = database.reference.child("Users").child("$id").child("Info")
+
+                info.addValueEventListener(object :ValueEventListener{
                     override fun onCancelled(p0: DatabaseError) {
-
                     }
-
                     override fun onDataChange(p0: DataSnapshot) {
 
-                        var map = p0.value as Map<String,Any>
-                        if(map!=null) {
-                            readObserve_editText.text = map["age"].toString()
-                        }else{
-                            Log.d("teste", "no user found")
-                        }
+                        if(p0.value != null) {  //if(Info != null)
 
+                            var map = p0.value as Map<String, Any>
+                            check4null(companyIdText, map, "companyId")
+                            check4null(companyText, map, "company")
+                            check4null(phoneText, map, "phone")
+                        }
+                        /*else{ //creates the folder Info
+                            println("--------------NAAAAAAAAAAAO------------")
+                            var map = mutableMapOf<String,Any>()
+                            map["phone"] = ""
+                            map["companyId"] = ""
+                            map["company"] = ""
+
+                            FirebaseDatabase.getInstance().reference
+                                    .child("Users")
+                                    .child("$id")
+                                    .child("Info")
+                                    .updateChildren(map)
+                        }*/
                     }
                 })
+
+    }
+
+    private fun check4null( place:EditText,  map: Map<String, Any>, key:String){
+        if( map[key]!=null){
+            place.hint = map[key].toString()
         }
-        */
-        var readSingle_editText = findViewById<TextView>(R.id.read_single_textView)
-        val id=auth.currentUser?.uid
-        database.reference
-            .child("Users")
-            //.child("$id")
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {
-
-                }
-                override fun onDataChange(p0: DataSnapshot) {
-
-                    var map = p0.value as Map<String,Any>
-                    readSingle_editText.text = map["age"].toString()
-
-                }
-            })
+        //else keeps the original hint
     }
 
 
@@ -126,10 +131,10 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    //real time database
-    fun onClickButtonSet(view:View){
-        var updateEditTextString = findViewById<EditText>(R.id.update_editText).text.toString()
-        var setEditTextString = findViewById<EditText>(R.id.set_edittext).text.toString()
+    //------------real time database--------------
+  /*  fun onClickButtonSet(view:View){
+        var updateEditTextString = findViewById<EditText>(R.id.nameText).text.toString()
+        var setEditTextString = findViewById<EditText>(R.id.ageText).text.toString()
         val id=auth.currentUser?.uid
         var map = mutableMapOf<String,Any>()
         map["name"] = updateEditTextString
@@ -139,19 +144,38 @@ class MainActivity : AppCompatActivity() {
             .child("Users")
             .child("$id")
             .setValue(map)
+    }*/
+
+    //if the user rights something it saves it in the map, if the user doesnt leaves the textbox blank it doesnt update that map[key]
+    private fun check4blank( map: MutableMap<String, Any>, key:String, info:String){
+        if( info.trim { it <= ' '} != ""){
+            map[key] = info
+        }
     }
 
     fun onClickButtonUpdate(view: View){
-        var updateEditTextString = findViewById<EditText>(R.id.update_editText).text.toString()
-        var setEditTextString = findViewById<EditText>(R.id.set_edittext).text.toString()
+        var phoneText = findViewById<EditText>(R.id.phoneText).text.toString()
+        var companyIdText = findViewById<EditText>(R.id.companyIdText).text.toString()
+        var companyText = findViewById<EditText>(R.id.companyText).text.toString()
         val id=auth.currentUser?.uid
         var map = mutableMapOf<String,Any>()
-        map["name"] = updateEditTextString
-        map["age"] = setEditTextString
+        /*if(phone!=null){
+            map["phone"] = phone
+        }
+        map["companyId"] = companyId
+        map["company"] = company*/
+
+        check4blank(map, "phone", phoneText)
+        check4blank(map, "companyId", companyIdText)
+        check4blank(map, "company", companyText)
+
+
+        //usar ainda phone number genero
 
         FirebaseDatabase.getInstance().reference
             .child("Users")
             .child("$id")
+            .child("Info")
             .updateChildren(map)
     }
 
@@ -160,10 +184,10 @@ class MainActivity : AppCompatActivity() {
         FirebaseDatabase.getInstance().reference
             .child("Users")
             .child("$id")
-            .child("name")
+            .child("name")  //alterar
             .removeValue()
     }
-
+/*
     fun onClickButtonReadSingle(view: View){
         var readSingle_editText = findViewById<TextView>(R.id.read_single_textView)
         val id=auth.currentUser?.uid
@@ -185,7 +209,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onClickButtonReadObserve(view: View){
-        var readObserve_editText = this.findViewById<TextView>(R.id.read_observe_textView)
+        var readObserve_editText = findViewById<TextView>(R.id.read_observe_textView)
         val id=auth.currentUser?.uid
         database.reference
             .child("Users")
@@ -203,5 +227,5 @@ class MainActivity : AppCompatActivity() {
                 }
             })
     }
-
+*/
 }

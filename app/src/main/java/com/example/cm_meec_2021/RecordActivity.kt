@@ -21,6 +21,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.cm_meec_2021.R
 import com.gauravk.audiovisualizer.visualizer.BarVisualizer
+import com.google.android.gms.tasks.Continuation
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
@@ -67,6 +69,7 @@ class RecordActivity : AppCompatActivity() {
 
         buttonStart.isEnabled = false
         buttonStop.isEnabled = false
+        buttonUpload.isEnabled = false
 
         /*
        val mVisualizer = findViewById<BarVisualizer>(R.id.aVisualizer);
@@ -103,19 +106,6 @@ class RecordActivity : AppCompatActivity() {
 
             timerViewer.start()
 
-            //upload do audio
-/*
-            val storage = FirebaseStorage.getInstance()
-            storage.reference.child("Audios/a.mp3").downloadUrl
-                    .addOnSuccessListener({
-                val mediaPlayer = MediaPlayer()
-                mediaPlayer.setDataSource(it.toString())
-                mediaPlayer.setOnPreparedListener { player ->
-                    player.start()
-                }
-                mediaPlayer.prepareAsync()
-            })
-*/
         }
 
 
@@ -124,6 +114,7 @@ class RecordActivity : AppCompatActivity() {
             recordAudio.stop()
             buttonStart.isEnabled = true
             buttonStop.isEnabled = false
+            buttonUpload.isEnabled = true
 
             timerViewer.cancel()
             timerView.text= null
@@ -136,7 +127,7 @@ class RecordActivity : AppCompatActivity() {
 
         // Ouvir gravação
         buttonPlay.setOnClickListener{
-            var playAudio = MediaPlayer()
+            val playAudio = MediaPlayer()
             playAudio.setDataSource(path)
             playAudio.prepare()
             playAudio.start()
@@ -146,13 +137,25 @@ class RecordActivity : AppCompatActivity() {
 
             uploadToStorage()
 
-            Toast.makeText(this, "Successfully Uploaded :)", Toast.LENGTH_LONG).show()
+            //Toast.makeText(this, "Successfully Uploaded :)", Toast.LENGTH_LONG).show()
         }
 
     }
-
+/*
     fun onClickDwnl(view: View){
+        //var path= Environment.getExternalStorageDirectory().toString()+"/recAndroid.mp3"
+        //filename from the top
+        var filename:String = "SOUND_"+timestamp+"_.mp3"
 
+        // Create a storage reference from our app
+        val storageRef = FirebaseStorage.getInstance().reference.child("Users/$id/Audios/$filename")
+        var file = Uri.fromFile(File(path))
+        storageRef.putFile(file)
+
+    }*/
+
+    private fun uploadToStorage(){
+        buttonUpload.isEnabled = false
 
         var filename:String = "SOUND_"+timestamp+"_.mp3"
 
@@ -162,9 +165,10 @@ class RecordActivity : AppCompatActivity() {
         var uploadTask: StorageTask<*>
         uploadTask = storageRef.putFile(file)
 
+        //send to firebase
         uploadTask.addOnCompleteListener { task ->
             if (task.isSuccessful) {//put the storage photo link in the realtime database
-                val downloadurl = uploadTask.result
+                val downloadurl = task.result       //uploadTask.result or task.result????
                 val url = downloadurl.toString()
 
                 val map = HashMap<String, Any>()
@@ -175,10 +179,18 @@ class RecordActivity : AppCompatActivity() {
                         .child("Audios")
                         .updateChildren(map)
 
+                //download and play
+                //var databaseRef = FirebaseDatabase.getInstance().reference.child("Users/$id/Audios")
                 storageRef.downloadUrl.addOnSuccessListener { url ->//put the photo on the imageview
                     //url
                     val urlTxt = findViewById<View>(R.id.dwnTxt) as TextView
                     urlTxt.text = url.toString()
+
+                    //var file = Uri.fromFile(File(uri.toString()))
+                    var playAudio = MediaPlayer()
+                    playAudio.setDataSource(url.toString())
+                    playAudio.prepare()
+                    playAudio.start()
 
                     Toast.makeText(this, "Successfully Uploaded and downloaded", Toast.LENGTH_LONG).show()
                 }
@@ -186,39 +198,6 @@ class RecordActivity : AppCompatActivity() {
                 Toast.makeText(this, "did nothing", Toast.LENGTH_LONG).show()
             }
         }
-    }
-
-    private fun uploadToStorage(){
-
-        //var path= Environment.getExternalStorageDirectory().toString()+"/recAndroid.mp3"
-        //filename from the top
-        var filename:String = "SOUND_"+timestamp+"_.mp3"
-
-        // Create a storage reference from our app
-        val storageRef = FirebaseStorage.getInstance().reference.child("Users/$id/Audios/$filename")
-        var file = Uri.fromFile(File(path))
-        storageRef.putFile(file)
-/*
-        var uploadTask: StorageTask<*>
-        uploadTask = fileref.putFile(imageUri!!)
-
-        uploadTask.addOnCompleteListener { task ->
-            if(task.isSuccessful){//put the storage photo link in the realtime database
-                val downloadurl=uploadTask.result
-                val url =downloadurl.toString()
-
-                val mapprofile=HashMap<String,Any>()
-                mapprofile["profilepic"]=url
-                FirebaseDatabase.getInstance().reference
-                        .child("users")
-                        .child("$id")
-                        .updateChildren(mapprofile)
-
-                fileref.downloadUrl.addOnSuccessListener { uri->//put the photo on the imageview
-                    Glide.with(this).load(uri).apply(RequestOptions.circleCropTransform()).into(image)
-                }
-            }
-            */
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

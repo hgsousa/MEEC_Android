@@ -11,36 +11,36 @@
     <!--START testing real time database START-->
 
     <EditText
-        android:id="@+id/set_edittext"
+        android:id="@+id/companyText"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="18dp"
         android:hint="Age"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/update_editText" />
-
-    <Button
-        android:id="@+id/set_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:onClick="onClickButtonSet"
-        android:text="Set"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.506"
-        app:layout_constraintStart_toEndOf="@+id/set_edittext"
-        app:layout_constraintTop_toBottomOf="@+id/update_button" />
+        app:layout_constraintTop_toBottomOf="@+id/companyIdText" />
 
     <EditText
-        android:id="@+id/update_editText"
+        android:id="@+id/companyIdText"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginBottom="316dp"
-        android:hint="Gender"
+        android:hint="company Id"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/phoneText"
+        android:layout_width="200dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="21dp"
+        android:hint="Company"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.933"
+        app:layout_constraintBottom_toTopOf="@+id/companyIdText" />
 
     <Button
         android:id="@+id/update_button"
@@ -48,57 +48,13 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="312dp"
         android:onClick="onClickButtonUpdate"
-        android:text="Update"
+        android:text="SAVE"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.485"
-        app:layout_constraintStart_toEndOf="@+id/update_editText" />
-
-    <Button
-        android:id="@+id/read_single_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="204dp"
-        android:layout_marginEnd="36dp"
-        android:onClick="onClickButtonReadSingle"
-        android:text="Read single"
-        android:textSize="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/read_observe_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onClickButtonReadObserve"
-        android:text="Read Observe"
-        android:textSize="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/read_observe_textView"
-        app:layout_constraintTop_toBottomOf="@+id/read_single_button" />
+        app:layout_constraintStart_toEndOf="@+id/companyIdText" />
 
     <!--END testing real time database END-->
-
-    <TextView
-        android:id="@+id/read_observe_textView"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:hint="Text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/read_single_textView" />
-
-    <TextView
-        android:id="@+id/read_single_textView"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:hint="Text"
-        app:layout_constraintEnd_toStartOf="@+id/read_single_button"
-        app:layout_constraintHorizontal_bias="0.326"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="210dp"
-        tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/delete_button"
@@ -112,7 +68,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/set_edittext" />
+        app:layout_constraintTop_toBottomOf="@+id/companyText" />
 
     <TextView
         android:id="@+id/secondActivity_name"
