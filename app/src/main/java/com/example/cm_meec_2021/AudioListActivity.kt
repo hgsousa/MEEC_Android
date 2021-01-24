@@ -13,7 +13,7 @@ import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.example.cm_meec_2021.databinding.ActivityMainBinding
+//import com.example.cm_meec_2021.databinding.ActivityMainBinding                   //has giving an Error here but not before merge (as it was not used)
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -76,6 +76,11 @@ class AudioListActivity : AppCompatActivity() {
         rv_recyclerView.adapter = RecyclerAdapter(titlesList,descList,imagesList)
 
         setUpFab()
+    }
+    fun onClickProfileAct(view: View){
+        val intent = Intent(this, ProfileActivity::class.java)
+        startActivity(intent)
+
     }
 
     private fun  setUpFab(){

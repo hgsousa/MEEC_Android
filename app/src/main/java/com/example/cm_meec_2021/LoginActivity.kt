@@ -22,7 +22,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import java.util.*
 
 
-class MainActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
 
     companion object{
         private const val RC_SIGN_IN = 120
@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     var callbackManager = CallbackManager.Factory.create()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_login)
 
         // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -121,7 +121,7 @@ class MainActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("SignInWithGoogle", "signInWithCredential:success")
-                    intent = Intent(this, SecondActivity_login::class.java)
+                    intent = Intent(this, ProfileActivity::class.java)
                     startActivity(intent)
                     finish()
                 } else {
@@ -138,7 +138,7 @@ class MainActivity : AppCompatActivity() {
             if(task.isSuccessful){
                 // Sign in success, update UI with the signed-in user's information
                 Log.d("SignInWithFacebook", "signInWithCredential:success")
-                intent = Intent(this, SecondActivity_login::class.java)
+                intent = Intent(this, ProfileActivity::class.java)
                 startActivity(intent)
                 finish()
             } else {
@@ -202,7 +202,7 @@ class MainActivity : AppCompatActivity() {
 
     //Register with email account
     fun onClickRegisterButton(view: View){
-        val intent = Intent(this, ThirdActivity_register::class.java)
+        val intent = Intent(this, RegisterActivity::class.java)
         startActivity(intent)
     }
 

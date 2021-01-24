@@ -13,7 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
 
-class SecondActivity_login : AppCompatActivity() {
+class ProfileActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var database: FirebaseDatabase  //var map = mutableMapOf<String,Any>()
@@ -21,7 +21,7 @@ class SecondActivity_login : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_second_login)
+        setContentView(R.layout.activity_profile)
 
         database = FirebaseDatabase.getInstance()
         reference = database.getReference("Users")
@@ -121,7 +121,7 @@ class SecondActivity_login : AppCompatActivity() {
 
         //Sign out email account
         auth.signOut()
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         //this 3 lines above can be substituted with onBackPressed() if we want to keep the info

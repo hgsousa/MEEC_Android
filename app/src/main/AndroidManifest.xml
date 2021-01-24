@@ -25,13 +25,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ThirdActivity_register"
+            android:name=".RegisterActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SecondActivity_login"
+            android:name=".ProfileActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:screenOrientation="portrait" />
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>

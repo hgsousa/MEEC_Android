@@ -17,7 +17,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.database.FirebaseDatabase
 
-class ThirdActivity_register : AppCompatActivity() {
+class RegisterActivity : AppCompatActivity() {
     companion object{
         private const val  RC_SIGN_IN = 120
     }
@@ -27,7 +27,7 @@ class ThirdActivity_register : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_third_register)
+        setContentView(R.layout.activity_register)
 
 
         // Configure Google Sign In
@@ -117,7 +117,7 @@ class ThirdActivity_register : AppCompatActivity() {
                             ).show()
 
                             //Send the user to the mainActivity and close this one
-                            val intent = Intent(this, MainActivity::class.java)
+                            val intent = Intent(this, LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             //intent.putExtra("user_id", firebaseUser.uid)
                             intent.putExtra("email_id", email)
@@ -169,6 +169,7 @@ class ThirdActivity_register : AppCompatActivity() {
         }
     }
 
+    //Test what this does__................................................... Probably delete
     private fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
@@ -176,7 +177,7 @@ class ThirdActivity_register : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("ThirdActivity_register", "signInWithCredential:success")
-                    val intent = Intent(this,SecondActivity_login::class.java)
+                    val intent = Intent(this,ProfileActivity::class.java)
                     startActivity(intent)
                 } else {
                     // If sign in fails, display a message to the user.
