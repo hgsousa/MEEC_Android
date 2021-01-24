@@ -117,7 +117,7 @@ class ThirdActivity_register : AppCompatActivity() {
                             ).show()
 
                             //Send the user to the mainActivity and close this one
-                            val intent = Intent(this, SecondActivity_login::class.java)
+                            val intent = Intent(this, MainActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             //intent.putExtra("user_id", firebaseUser.uid)
                             intent.putExtra("email_id", email)
@@ -176,7 +176,7 @@ class ThirdActivity_register : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("ThirdActivity_register", "signInWithCredential:success")
-                    val intent = Intent(this,ProfileActivity::class.java)
+                    val intent = Intent(this,SecondActivity_login::class.java)
                     startActivity(intent)
                 } else {
                     // If sign in fails, display a message to the user.
