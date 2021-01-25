@@ -121,7 +121,7 @@ class LoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("SignInWithGoogle", "signInWithCredential:success")
-                    intent = Intent(this, ProfileActivity::class.java)
+                    intent = Intent(this, AudioListActivity::class.java)
                     startActivity(intent)
                     finish()
                 } else {
@@ -138,7 +138,7 @@ class LoginActivity : AppCompatActivity() {
             if(task.isSuccessful){
                 // Sign in success, update UI with the signed-in user's information
                 Log.d("SignInWithFacebook", "signInWithCredential:success")
-                intent = Intent(this, ProfileActivity::class.java)
+                intent = Intent(this, AudioListActivity::class.java)
                 startActivity(intent)
                 finish()
             } else {

@@ -24,40 +24,27 @@ class ProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_profile)
 
         database = FirebaseDatabase.getInstance()
-        reference = database.getReference("Users")
+        //reference = database.getReference("Users")  //unnecessary i think
         auth = FirebaseAuth.getInstance();
         val currentUser = auth.currentUser
+
+        val emailText = findViewById<TextView>(R.id.emailText)
+        val nameText = findViewById<EditText>(R.id.nameEditText)
+        emailText.text = currentUser?.email
+        nameText.hint = currentUser?.displayName
 
         //sign in with google
         val googleAuth=findViewById<TextView>(R.id.textView2)
         val id_goo = currentUser?.uid
-        val name_goo = currentUser?.displayName
-        val email_goo = currentUser?.email
-        googleAuth.text = "user id :: $id_goo\n"+"email  :: $email_goo \n" + "name :: $name_goo";
 
+        googleAuth.text = "user id :: $id_goo\n"+"email  :: ${emailText.text} \n" + "name :: ${nameText.hint}";
 
         //sign in w email
-        val email = intent.getStringExtra("email_id")
-        val name = intent.getStringExtra("user_id")
-        val welcometv = findViewById<TextView>(R.id.secondActivity_name)
-        welcometv.text = "Hello  :: $email \nuser :: $name"
+        //val email = intent.getStringExtra("email_id")
+        //val name = intent.getStringExtra("user_id")
+        //val welcometv = findViewById<TextView>(R.id.secondActivity_name)
+        //welcometv.text = "Hello  :: $email \nuser :: $name"
 
-
-        // Get user Info
-     /*   var updateEditTextString = findViewById<EditText>(R.id.nameText).text.toString()
-        var setEditTextString = findViewById<EditText>(R.id.ageText).text.toString()
-        val id=auth.currentUser?.uid
-        var map = mutableMapOf<String,Any>()
-        map["name"] = updateEditTextString //name da firebase
-        map["age"] = setEditTextString
-        map["company"] = "IPCA"
-        //usar ainda phone number genero
-
-        FirebaseDatabase.getInstance().reference
-                .child("Users")
-                .child("$id")
-                .child("Info")
-                .updateChildren(map)*/
 
         var phoneText = findViewById<EditText>(R.id.phoneText)
         var companyIdText = findViewById<EditText>(R.id.companyIdText)

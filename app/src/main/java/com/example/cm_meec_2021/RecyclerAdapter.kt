@@ -25,9 +25,11 @@ class RecyclerAdapter(private var titles: List<String>, private var details: Lis
                 Toast.makeText(itemView.context,"You click on an item # ${position + 1}", Toast.LENGTH_SHORT).show()
 
                 Handler().postDelayed({
-                    val i = Intent(itemView.context, PlayAudioActivity::class.java) //create an intent for the activity you want
-                    i.putExtra("extra_info",position + 1) //add the information you want as an extra
-                    startActivity(itemView.context, i,null) //start the activity
+                    val intent = Intent(itemView.context, PlayAudioActivity::class.java) //create an intent for the activity you want
+                    val audioPosition = position + 1
+                    intent.putExtra("audioNumber",audioPosition.toString()) //sends audio list number
+                    intent.putExtra("filename", "${details[position]}") //sends audio filename (realtime database key for audio URL)
+                    startActivity(itemView.context, intent,null) //start the activity
 
                 }, 1000)
             }

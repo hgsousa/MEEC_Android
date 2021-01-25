@@ -126,7 +126,8 @@ class AudioListActivity : AppCompatActivity() {
                 override fun onDataChange(p0: DataSnapshot) {
                     for ((counter,i) in p0.children.withIndex()){
                         val filename = i.key.toString()
-                        addtoList("Audio ${counter+1}"," $filename", R.mipmap.ic_launcher_sound)
+                        addtoList("Audio ${counter+1}","$filename", R.mipmap.ic_launcher_sound)
+                        rv_recyclerView.adapter?.notifyDataSetChanged()
                     }
                 }
             })
