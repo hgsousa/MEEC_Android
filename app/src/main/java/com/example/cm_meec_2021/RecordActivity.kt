@@ -1,6 +1,10 @@
 package com.example.cm_meec_2021
 
 import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -9,6 +13,7 @@ import android.media.MediaRecorder
 import android.media.MediaRecorder.OutputFormat.MPEG_4
 import android.net.Uri
 import android.net.UrlQuerySanitizer
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Environment
@@ -19,6 +24,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.example.cm_meec_2021.R
 import com.gauravk.audiovisualizer.visualizer.BarVisualizer
 import com.google.android.gms.tasks.Continuation
@@ -47,12 +54,16 @@ class RecordActivity : AppCompatActivity() {
     var path:String = Environment.getExternalStorageDirectory().toString()+"/recAndroid.mp3"
     var timestamp:String = ""
     val id = FirebaseAuth.getInstance().currentUser?.uid
-    // lateinit var playAudio : MediaPlayer
+    var playAudio = MediaPlayer()
+
+    private val CHANNEL_ID = "channel_id_example"
+    private val notificationId = 101
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_record)
 
+        supportActionBar?.hide()
 
         buttonStart = findViewById<Button>(R.id.buttonStart)
         buttonPlay = findViewById<Button>(R.id.buttonPlay)
@@ -133,9 +144,7 @@ class RecordActivity : AppCompatActivity() {
 
         buttonPlay.setOnClickListener{
 
-            var playAudio = MediaPlayer()
-            //if(!playAudio.isPlaying){   //only does the plau button function if it's not playing
-
+            playAudio.reset()
             //buttonPlay.isEnabled = false
             playAudio.setDataSource(path)
             playAudio.prepare()
@@ -163,6 +172,18 @@ class RecordActivity : AppCompatActivity() {
         storageRef.putFile(file)
 
     }*/
+
+    //audio stop if user gets out of the activity
+    override fun onBackPressed(){
+        playAudio.stop()
+        val intentback = Intent(this, AudioListActivity::class.java)
+        startActivity(intentback)
+        finish()
+    }
+    override fun onPause(){
+        super.onPause()
+        playAudio.stop()
+    }
 
     private fun uploadToStorage(){
         buttonUpload.isEnabled = false
@@ -206,6 +227,7 @@ class RecordActivity : AppCompatActivity() {
                     playAudio.start()*/
 
                     Toast.makeText(this, "Successfully Uploaded and downloaded", Toast.LENGTH_LONG).show()
+                    sendNotification()
                 }
             }else{
                 Toast.makeText(this, "did nothing", Toast.LENGTH_LONG).show()
@@ -217,5 +239,38 @@ class RecordActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if(requestCode==111 && grantResults[0]==PackageManager.PERMISSION_GRANTED)
             buttonPlay.isEnabled = true
+    }
+
+    //notifications
+    private fun createNotificationChannel(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            val name = "Notification title"
+            val descriptionText = "Notification description"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNEL_ID,name,importance).apply {
+                description = descriptionText
+            }
+            val notificationManager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    private fun sendNotification(){
+        val intent = Intent(this,RecordActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(this,0,intent,0)
+        //val bitmap: Bitmap = BitmapFactory.decodeResource(applicationContext.resources, R.drawable.ipca_logo)
+
+        val builder = NotificationCompat.Builder(this,CHANNEL_ID)
+            .setSmallIcon(R.drawable.eec)
+            .setContentTitle("titulo fixe")
+            .setContentText("Audio uploaded to Firebase")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(pendingIntent)
+
+        with(NotificationManagerCompat.from(this)){
+            notify(notificationId,builder.build())
+        }
     }
 }

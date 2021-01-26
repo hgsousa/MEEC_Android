@@ -9,7 +9,7 @@
     android:layout_margin="4dp"
     android:clickable="true"
     android:focusable="true"
-    android:backgroundTint="#D8A457"
+    android:backgroundTint="#CACACA"
     android:foreground="?selectableItemBackground"
     app:cardCornerRadius="10dp">
 

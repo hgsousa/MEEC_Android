@@ -14,10 +14,14 @@
         android:roundIcon="@drawable/eec"
         android:supportsRtl="true"
         android:theme="@style/Theme.CM_MEEC_2021">
-        <activity android:name=".PlayAudioActivity"></activity>
-        <activity android:name=".AudioListActivity" />
-        <activity android:name=".RecordActivity" />
-        <activity android:name=".StartActivity">
+        <activity android:name=".PlayAudioActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".AudioListActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".RecordActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".StartActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

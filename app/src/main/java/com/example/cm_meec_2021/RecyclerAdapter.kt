@@ -30,11 +30,11 @@ class RecyclerAdapter(private var titles: List<String>, private var details: Lis
                     intent.putExtra("audioNumber",audioPosition.toString()) //sends audio list number
                     intent.putExtra("filename", "${details[position]}") //sends audio filename (realtime database key for audio URL)
                     startActivity(itemView.context, intent,null) //start the activity
+                    //(this as AudioListActivity).finish()
 
                 }, 1000)
             }
         }
-
     }
 
 

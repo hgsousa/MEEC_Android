@@ -10,6 +10,7 @@ import android.os.ParcelFileDescriptor
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -36,27 +37,31 @@ class AudioListActivity : AppCompatActivity() {
     private var descList = mutableListOf<String>()
     private var imagesList = mutableListOf<Int>()
 
+    lateinit var profile_cardview: CardView
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audio_list)
 
-        /*-------------welcome (name)  -------------------------------------------------------------------------*/
+        supportActionBar?.hide()
 
         auth = FirebaseAuth.getInstance();
         val currentUser = auth.currentUser
+
         nameProfile_textView = findViewById(R.id.nameProfile_textView)
+        profile_cardview = findViewById(R.id.profile_cardview)
 
         val nameGoogle = currentUser?.displayName
+        nameProfile_textView.text = "Welcome, ${nameGoogle}"
 
-        val nameEmail = intent.getStringExtra("email_id")
+        /*val nameEmail = intent.getStringExtra("email_id")
 
         if (nameGoogle == null ){
             nameProfile_textView.text = "Welcome, ${nameEmail}"
         }else{
             nameProfile_textView.text = "Welcome, ${nameGoogle}"
-        }
-
-        /*--------------------------------------------------------------------------------------*/
+        }*/
 
         rv_recyclerView = findViewById<RecyclerView>(R.id.rv_recyclerView)
         //refreshApp()
@@ -71,16 +76,15 @@ class AudioListActivity : AppCompatActivity() {
 
         }
 
-
         rv_recyclerView.layoutManager = LinearLayoutManager(this)
         rv_recyclerView.adapter = RecyclerAdapter(titlesList,descList,imagesList)
 
         setUpFab()
-    }
-    fun onClickProfileAct(view: View){
-        val intent = Intent(this, ProfileActivity::class.java)
-        startActivity(intent)
-
+        profile_cardview.setOnClickListener(){
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+            //finish()
+        }
     }
 
     private fun  setUpFab(){
@@ -97,6 +101,7 @@ class AudioListActivity : AppCompatActivity() {
         fabRecord.setOnClickListener{
             val intent = Intent(this, RecordActivity::class.java)
             startActivity(intent)
+            finish()
         }
     }
 
@@ -116,8 +121,8 @@ class AudioListActivity : AppCompatActivity() {
 
     private fun postToList(){
         val id = FirebaseAuth.getInstance().currentUser?.uid
-        val storageRef = FirebaseDatabase.getInstance().reference
-        storageRef.child("Users/$id/Audios/")
+        val dataRef = FirebaseDatabase.getInstance().reference
+        dataRef.child("Users/$id/Audios/")
             .addValueEventListener(object : ValueEventListener{
                 override fun onCancelled(p0: DatabaseError) {
 

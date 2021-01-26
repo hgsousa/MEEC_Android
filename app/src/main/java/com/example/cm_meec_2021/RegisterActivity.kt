@@ -29,6 +29,7 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
+        supportActionBar?.title = "Register"
 
         // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -143,7 +144,7 @@ class RegisterActivity : AppCompatActivity() {
             map[key] = info
         }
     }
-
+/*
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -187,7 +188,7 @@ class RegisterActivity : AppCompatActivity() {
 
             }
     }
-
+*/
 
 
 }
