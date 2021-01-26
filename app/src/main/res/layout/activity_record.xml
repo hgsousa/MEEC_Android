@@ -72,7 +72,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:textAlignment="center"
-        android:textSize="20dp"
+        android:textSize="19dp"
         android:textStyle="bold"
         android:text="Press to Record"
         app:layout_constraintBottom_toTopOf="@+id/buttonStart"

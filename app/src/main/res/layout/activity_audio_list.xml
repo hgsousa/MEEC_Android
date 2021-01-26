@@ -55,7 +55,7 @@
         android:id="@+id/button2"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:backgroundTint="#D8A457"
+        android:backgroundTint="@color/purple_500"
         app:srcCompat="@android:drawable/ic_menu_rotate" />
     -->
     <androidx.cardview.widget.CardView
