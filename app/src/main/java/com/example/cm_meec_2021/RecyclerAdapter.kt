@@ -12,12 +12,13 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 
 
-class RecyclerAdapter(private var titles: List<String>, private var details: List<String>, private var images:List<Int>):
+class RecyclerAdapter(private var titles:List<String>, private var details:List<String>, private var images:List<Int>, private var classValue:List<String>):
     RecyclerView.Adapter<RecyclerAdapter.ViewHolder>(){
     inner class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
         val itemTitle: TextView = itemView.findViewById(R.id.tv_title)
         val itemDetails: TextView = itemView.findViewById(R.id.tv_descrition)
         val itemPicture: ImageView = itemView.findViewById(R.id.iv_image)
+        val itemClass: TextView = itemView.findViewById(R.id.tv_class)
 
         init {
             itemView.setOnClickListener{v:View->
@@ -53,5 +54,6 @@ class RecyclerAdapter(private var titles: List<String>, private var details: Lis
         holder.itemTitle.text = titles[position]
         holder.itemDetails.text = details[position]
         holder.itemPicture.setImageResource(images[position])
+        holder.itemClass.text = classValue[position]
     }
 }

@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -37,10 +38,10 @@ class ProfileActivity : AppCompatActivity() {
         emailText.text = currentUser?.email
         nameText.text = currentUser?.displayName
 
-        //JUST FOR TESTING----------------------------------------------------------------------------------
+        /*//-----------------------------------------------------------JUST FOR TESTING------------
         val id_goo = currentUser?.uid
         emailText.text = currentUser?.displayName + "\nuser id :: $id_goo\n"+"email  :: ${emailText.text} \n" + "name :: ${nameText.hint}";
-        //-------------------------------------------------------------------------------------------------
+        *///---------------------------------------------------------------------------------------
 
         var phoneText = findViewById<EditText>(R.id.phoneText)
         var companyIdText = findViewById<EditText>(R.id.companyIdText)
@@ -127,5 +128,6 @@ class ProfileActivity : AppCompatActivity() {
             .child("Info")
             .updateChildren(map)
 
+        Toast.makeText(this, "Saved", Toast.LENGTH_LONG).show()
     }
 }

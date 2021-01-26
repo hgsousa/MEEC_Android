@@ -14,14 +14,15 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.core.content.FileProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
 import java.io.File
-import java.io.FileOutputStream
 import java.io.FileWriter
 import java.io.IOException
 import java.lang.Exception
@@ -31,6 +32,7 @@ class PlayAudioActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var database: FirebaseDatabase
+    private lateinit var storage: FirebaseStorage
     //private lateinit var reference: DatabaseReference
     lateinit var cirprogrBar: CircularProgressBar
     lateinit var seekBar: SeekBar
@@ -50,6 +52,7 @@ class PlayAudioActivity : AppCompatActivity() {
 
 
         database = FirebaseDatabase.getInstance()
+        storage = FirebaseStorage.getInstance()
         //reference = database.getReference("Users")
         auth = FirebaseAuth.getInstance()
 
@@ -88,7 +91,10 @@ class PlayAudioActivity : AppCompatActivity() {
                     val map = p1.value as Map<String, Any>
                     url=map["url"].toString()
                     audioClass = map["classValue"].toString()
-                    audioClassTextView.text = "Class: $audioClass"
+                    val date = p1.key?.substring(6,8)+"/"+p1.key?.substring(4,6)+"/"+p1.key?.substring(0,4)
+                    val time = p1.key?.substring(13,15)+":"+p1.key?.substring(11,13)+":"+p1.key?.substring(9,11)
+                    audioClassTextView.text = "Date: $date"+ "\n\nTime: $time"+"\n\nClass: $audioClass"
+
                 }
             }
         })
@@ -128,6 +134,7 @@ class PlayAudioActivity : AppCompatActivity() {
 
         imageDeleteButton.setOnClickListener() {
 
+            //delete from database
             val id=auth.currentUser?.uid
             database.reference
                 .child("Users")
@@ -135,6 +142,21 @@ class PlayAudioActivity : AppCompatActivity() {
                 .child("Audios")
                 .child("$filename")
                 .removeValue()
+
+            //delete from storage
+            val storageRef = storage.reference
+                    .child("Users")
+                    .child("$id")
+                    .child("Audios")
+                    .child("SOUND_${filename}_.mp3")
+            //println("------------------SOUND_${filename}_.mp3")
+
+            storageRef.delete().addOnSuccessListener {
+                Toast.makeText(this, "Storage delete Successful", Toast.LENGTH_LONG).show()
+            }.addOnFailureListener {
+                Toast.makeText(this, "Storage delete Failed", Toast.LENGTH_LONG).show()
+            }
+
             onBackPressed()
         }
 
@@ -148,13 +170,14 @@ class PlayAudioActivity : AppCompatActivity() {
             generateNoteOnSD(this, "AudioReport.txt", AudioMessage)
 
             //var file = Uri.fromFile(File(Environment.getExternalStorageDirectory().toString()+"/MEEC_Android/AudioReport.txt"))
-            val file = Uri.fromFile(File(Environment.getExternalStorageDirectory(), "MEEC_Android/AudioReport.txt"))
+            //val file = Uri.fromFile(File(Environment.getExternalStorageDirectory(), "MEEC_Android/AudioReport.txt"))
             //Environment.getExternalStorageDirectory().toString()+"/recAndroid.mp3"
-
+            val fileUri = FileProvider.getUriForFile(this, "com.example.cm_meec_2021.provider",
+                    File(Environment.getExternalStorageDirectory(), "MEEC_Android/AudioReport.txt"))
             val intent = Intent()
             intent.action= Intent.ACTION_SEND
-            intent.putExtra(Intent.EXTRA_TEXT,file)     //DOESNT WORK
-            intent.type="*/*"
+            intent.putExtra(Intent.EXTRA_STREAM,fileUri)
+            intent.type="text/*"
             /*
             intent.putExtra(Intent.EXTRA_TEXT,file)
             intent.type="text/plain"
@@ -164,8 +187,6 @@ class PlayAudioActivity : AppCompatActivity() {
         }
 
     }
-
-
 
     fun generateNoteOnSD(context: Context?, sFileName: String?, sBody: String?) {
         try {
@@ -179,7 +200,7 @@ class PlayAudioActivity : AppCompatActivity() {
             writer.append(sBody)
             writer.flush()
             writer.close()
-            Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show()
+
         } catch (e: IOException) {
             e.printStackTrace()
         }
