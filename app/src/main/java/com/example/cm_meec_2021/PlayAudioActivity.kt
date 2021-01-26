@@ -7,10 +7,13 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.os.Handler
 import android.widget.ImageButton
+import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -21,6 +24,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.FileWriter
 import java.io.IOException
+import java.lang.Exception
 
 
 class PlayAudioActivity : AppCompatActivity() {
@@ -29,6 +33,8 @@ class PlayAudioActivity : AppCompatActivity() {
     private lateinit var database: FirebaseDatabase
     //private lateinit var reference: DatabaseReference
     lateinit var cirprogrBar: CircularProgressBar
+    lateinit var seekBar: SeekBar
+
     //lateinit var imageShareButton: ImageButton
     val playAudio = MediaPlayer()
     var cirprogrBarAnimation = false
@@ -47,8 +53,11 @@ class PlayAudioActivity : AppCompatActivity() {
         //reference = database.getReference("Users")
         auth = FirebaseAuth.getInstance()
 
-        cirprogrBar = findViewById(R.id.circularProgressBar)
-        val imagePlayButton = findViewById<ImageButton>(R.id.imagePlayButton)
+        //cirprogrBar = findViewById(R.id.circularProgressBar)
+        val imagePlayButton = findViewById<FloatingActionButton>(R.id.imagePlayButton)
+
+        seekBar = findViewById<SeekBar>(R.id.seekbar)
+
         val imageDeleteButton = findViewById<ImageButton>(R.id.imageDeleteButton)
         val imageShareButton = findViewById<ImageButton>(R.id.imageShareButton)
         val pageTitle = findViewById<TextView>(R.id.textView)
@@ -84,6 +93,7 @@ class PlayAudioActivity : AppCompatActivity() {
             }
         })
 
+        //media buttons ----------------------------------------------------------------------------
         imagePlayButton.setOnClickListener() {
 
             //play audio
@@ -92,14 +102,30 @@ class PlayAudioActivity : AppCompatActivity() {
             playAudio.prepare()
             playAudio.start()
 
-            cicularProgressbar()
-            //cirprogrBar.setProgressWithAnimation(playAudio.currentPosition.toFloat(), playAudio.duration.toFloat())
-            cirprogrBarAnimation=true
+            initialiseSeekBar()
         }
-        /*
-        audioClassTextView.text = playAudio.currentPosition.toFloat().toString()
-        cirprogrBar.setProgressWithAnimation(playAudio.currentPosition.toFloat(), 10000)
-*/
+
+
+        seekBar.setOnSeekBarChangeListener(object :SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                if (fromUser)playAudio?.seekTo(progress)
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+            }
+
+        })
+
+
+
+
+
+        // ----------------------------------------------------------------------------
+
+
         imageDeleteButton.setOnClickListener() {
 
             val id=auth.currentUser?.uid
@@ -139,6 +165,8 @@ class PlayAudioActivity : AppCompatActivity() {
 
     }
 
+
+
     fun generateNoteOnSD(context: Context?, sFileName: String?, sBody: String?) {
         try {
             val root =
@@ -169,28 +197,22 @@ class PlayAudioActivity : AppCompatActivity() {
         playAudio.stop()
     }
 
-    private fun cicularProgressbar(){
 
-        cirprogrBar.apply {
-            progressMax = 100f
+    private fun initialiseSeekBar(){
+        seekBar.max = playAudio!!.duration
+        val handler = Handler()
+        handler.postDelayed(object :Runnable{
+            override fun run(){
+                try {
+                    seekBar.progress = playAudio!!.currentPosition
+                    handler.postDelayed(this, 1000)
+                }catch(e:Exception){
+                    seekBar.progress = 0
+                }
 
-            progressBarWidth = 20f
-
-            progressBarColorStart = Color.GRAY
-            progressBarColorEnd = Color.DKGRAY
-            progressBarColorDirection = CircularProgressBar.GradientDirection.TOP_TO_BOTTOM
-
-            backgroundProgressBarColorStart = Color.BLACK
-
-            roundBorder = true
-            progressDirection = CircularProgressBar.ProgressDirection.TO_RIGHT
-
-            //https://github.com/lopspower/CircularProgressBar
-
-        }
-
-        cirprogrBar.onProgressChangeListener = {progress->
-
-        }
+            }
+        },0)
     }
+
+
 }

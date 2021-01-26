@@ -93,6 +93,7 @@ class ProfileActivity : AppCompatActivity() {
 
     }
 
+
     //get Info from database
 
     //if the user rights something it saves it in the map, if the user doesnt leaves the textbox blank it doesnt update that map[key]
