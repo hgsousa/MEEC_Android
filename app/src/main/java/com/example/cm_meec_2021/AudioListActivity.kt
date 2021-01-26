@@ -36,6 +36,7 @@ class AudioListActivity : AppCompatActivity() {
     private var titlesList = mutableListOf<String>()
     private var descList = mutableListOf<String>()
     private var imagesList = mutableListOf<Int>()
+    private var classList = mutableListOf<String>()
 
     lateinit var profile_cardview: CardView
 
@@ -67,17 +68,18 @@ class AudioListActivity : AppCompatActivity() {
         //refreshApp()
         postToList()
 
+        /*      //Button Refresh
         var buttonRefresh = findViewById<ImageButton>(R.id.button2)
         buttonRefresh.setOnClickListener(){
             finish();
             overridePendingTransition(0, 0);
             startActivity(getIntent());
             overridePendingTransition(0, 0);
-
         }
+        */
 
         rv_recyclerView.layoutManager = LinearLayoutManager(this)
-        rv_recyclerView.adapter = RecyclerAdapter(titlesList,descList,imagesList)
+        rv_recyclerView.adapter = RecyclerAdapter(titlesList,descList,imagesList,classList)
 
         setUpFab()
         profile_cardview.setOnClickListener(){
@@ -113,10 +115,11 @@ class AudioListActivity : AppCompatActivity() {
         }
     }
 
-    private fun addtoList(title: String,description: String,Image: Int){
+    private fun addtoList(title:String, description:String, Image:Int, classValue:String){
         titlesList.add(title)
         descList.add(description)
         imagesList.add(Image)
+        classList.add(classValue)
     }
 
     private fun postToList(){
@@ -130,9 +133,29 @@ class AudioListActivity : AppCompatActivity() {
 
                 override fun onDataChange(p0: DataSnapshot) {
                     for ((counter,i) in p0.children.withIndex()){
+                        //get filename
                         val filename = i.key.toString()
-                        addtoList("Audio ${counter+1}","$filename", R.mipmap.ic_launcher_sound)
-                        rv_recyclerView.adapter?.notifyDataSetChanged()
+
+                        //get class value
+                        var classValue = "test"
+                        val filenameRef = dataRef.child("Users/$id/Audios/$filename")
+                        filenameRef.addValueEventListener(object : ValueEventListener {
+                            override fun onCancelled(p1: DatabaseError) {
+                            }
+                            override fun onDataChange(p1: DataSnapshot) {
+                                //println("-------------------------teste-------------------------")
+                                if(p1.value != null) {  //if(filename != null)
+                                    val map = p1.value as Map<String, Any>
+                                    classValue = map["classValue"].toString()
+                                    //println(classValue)
+
+                                    //Send to Recycler Item
+                                    addtoList("Audio ${counter+1}","$filename", R.mipmap.ic_launcher_sound, "Class: ${classValue}")
+                                    rv_recyclerView.adapter?.notifyDataSetChanged()
+                                }
+                            }
+                        })
+                        //previous addtoList and adapter?.notifyDataSetChanged()
                     }
                 }
             })

@@ -90,7 +90,7 @@ class RecordActivity : AppCompatActivity() {
         val timerViewer = object: CountDownTimer(10000, 1000){
             override fun onTick(i: Long) {
 
-                timerView.text="Time: ${i/1000} sec"
+                timerView.text="Remaining Time: ${i/1000} sec"
             }
             override fun onFinish() { //recording finished
 
@@ -103,9 +103,10 @@ class RecordActivity : AppCompatActivity() {
                 timerView.text= null
                 timestamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())  //save time for filename
 
-                //uri
+                /*//uri -----------------------------------------------------------JUST FOR TESTING
                 val uriTxt = findViewById<View>(R.id.uriTxt) as TextView
-                uriTxt.text =Environment.getExternalStorageDirectory().toString()+"/recAndroid.mp3"
+                uriTxt.text ="URI: "+Environment.getExternalStorageDirectory().toString()+"/recAndroid.mp3"
+                 *///------------------------------------------------------------------------------
             }
         }
 
@@ -217,7 +218,7 @@ class RecordActivity : AppCompatActivity() {
 
                     // Só pra teste--------------------------------------------------------
                     val urlTxt = findViewById<View>(R.id.dwnTxt) as TextView
-                    urlTxt.text = url.toString()
+                    urlTxt.text = "URL: " + url.toString()
 
             /*//use this to play the audio file from firebase by accessing the child and getting the url string with a specific filename
                     //var file = Uri.fromFile(File(uri.toString()))

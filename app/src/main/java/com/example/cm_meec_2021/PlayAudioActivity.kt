@@ -11,6 +11,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -18,7 +19,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
 import java.io.File
-import java.io.FileOutputStream
 import java.io.FileWriter
 import java.io.IOException
 
@@ -122,13 +122,14 @@ class PlayAudioActivity : AppCompatActivity() {
             generateNoteOnSD(this, "AudioReport.txt", AudioMessage)
 
             //var file = Uri.fromFile(File(Environment.getExternalStorageDirectory().toString()+"/MEEC_Android/AudioReport.txt"))
-            val file = Uri.fromFile(File(Environment.getExternalStorageDirectory(), "MEEC_Android/AudioReport.txt"))
+            //val file = Uri.fromFile(File(Environment.getExternalStorageDirectory(), "MEEC_Android/AudioReport.txt"))
             //Environment.getExternalStorageDirectory().toString()+"/recAndroid.mp3"
-
+            val fileUri = FileProvider.getUriForFile(this, "com.example.cm_meec_2021.provider",
+                    File(Environment.getExternalStorageDirectory(), "MEEC_Android/AudioReport.txt"))
             val intent = Intent()
             intent.action= Intent.ACTION_SEND
-            intent.putExtra(Intent.EXTRA_TEXT,file)     //DOESNT WORK
-            intent.type="*/*"
+            intent.putExtra(Intent.EXTRA_STREAM,fileUri)     //DOESNT WORK
+            intent.type="text/*"
             /*
             intent.putExtra(Intent.EXTRA_TEXT,file)
             intent.type="text/plain"
@@ -151,7 +152,7 @@ class PlayAudioActivity : AppCompatActivity() {
             writer.append(sBody)
             writer.flush()
             writer.close()
-            Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show()
+
         } catch (e: IOException) {
             e.printStackTrace()
         }
