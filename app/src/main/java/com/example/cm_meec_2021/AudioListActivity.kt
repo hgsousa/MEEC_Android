@@ -153,5 +153,11 @@ class AudioListActivity : AppCompatActivity() {
                 }
             })
     }
-
+    override fun onRestart() {
+        super.onRestart()
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(getIntent());
+        overridePendingTransition(0, 0);
+    }
 }
