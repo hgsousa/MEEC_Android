@@ -65,6 +65,14 @@ class SecondActivity_login : AppCompatActivity() {
         }
     }*/
 
+    //About US button
+
+    fun onClickAbout(view: View) {
+        val intent = Intent(this , AboutActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
     //Sign in with Google
     fun onClickLoginGoogleButton(view: View) {
         val signInIntent = googleSignInClient.signInIntent
