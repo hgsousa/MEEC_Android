@@ -22,7 +22,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import java.util.*
 
 
-class SecondActivity_login : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
 
     companion object{
         private const val RC_SIGN_IN = 120
@@ -32,7 +32,9 @@ class SecondActivity_login : AppCompatActivity() {
     var callbackManager = CallbackManager.Factory.create()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_second_login)
+        setContentView(R.layout.activity_login)
+
+        supportActionBar?.title = "Login"
 
         // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -129,7 +131,7 @@ class SecondActivity_login : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("SignInWithGoogle", "signInWithCredential:success")
-                    intent = Intent(this, ProfileActivity::class.java)
+                    intent = Intent(this, AudioListActivity::class.java)
                     startActivity(intent)
                     finish()
                 } else {
@@ -137,6 +139,7 @@ class SecondActivity_login : AppCompatActivity() {
                     Log.w("SignInWithGoogle", "signInWithCredential:failure", task.exception)
                 }
             }
+
     }
     fun firebaseAuthWithFacebook(result: LoginResult?){
         var credential = FacebookAuthProvider.getCredential(result?.accessToken?.token!!)
@@ -145,7 +148,7 @@ class SecondActivity_login : AppCompatActivity() {
             if(task.isSuccessful){
                 // Sign in success, update UI with the signed-in user's information
                 Log.d("SignInWithFacebook", "signInWithCredential:success")
-                intent = Intent(this, ProfileActivity::class.java)
+                intent = Intent(this, AudioListActivity::class.java)
                 startActivity(intent)
                 finish()
             } else {
@@ -188,7 +191,7 @@ class SecondActivity_login : AppCompatActivity() {
                         ).show()
 
                         //Send the user to the *main Activity* (SecondActivity_login) and close this one
-                        val intent = Intent(this, ProfileActivity::class.java)
+                        val intent = Intent(this, AudioListActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         intent.putExtra("user_id", auth.currentUser!!.uid) //mudei o FirebaseAuth.getInstance()
                         intent.putExtra("email_id", email)
@@ -209,7 +212,7 @@ class SecondActivity_login : AppCompatActivity() {
 
     //Register with email account
     fun onClickRegisterButton(view: View){
-        val intent = Intent(this, ThirdActivity_register::class.java)
+        val intent = Intent(this, RegisterActivity::class.java)
         startActivity(intent)
     }
 

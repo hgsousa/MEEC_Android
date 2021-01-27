@@ -7,16 +7,24 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:requestLegacyExternalStorage="true"
         android:allowBackup="true"
         android:icon="@drawable/eec"
         android:label="@string/app_name"
-        android:requestLegacyExternalStorage="true"
         android:roundIcon="@drawable/eec"
         android:supportsRtl="true"
         android:theme="@style/Theme.CM_MEEC_2021">
-        <activity android:name=".AboutActivity"></activity>
-        <activity android:name=".RecordActivity" />
-        <activity android:name=".StartActivity">
+
+        <activity android:name=".PlayAudioActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".AboutActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".AudioListActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".RecordActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".StartActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,34 +32,46 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ThirdActivity_register"
+            android:name=".RegisterActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ProfileActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SecondActivity_login"
+            android:name=".LoginActivity"
             android:screenOrientation="portrait" />
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
 
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" /> <!-- facebook -->
-        <activity
-            android:name="com.facebook.FacebookActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+        <!--Share function-->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.cm_meec_2021.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <!-- ressource file to create -->
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/share_paths">
+            </meta-data>
+        </provider>
+
+        <!--facebook-->
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

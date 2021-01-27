@@ -12,6 +12,7 @@ import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.database.*
 
 
@@ -25,45 +26,27 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
+        supportActionBar?.title = "Profile"
+
         database = FirebaseDatabase.getInstance()
-        reference = database.getReference("Users")
+        //reference = database.getReference("Users")  //unnecessary i think
         auth = FirebaseAuth.getInstance();
         val currentUser = auth.currentUser
 
-        //sign in with google
-        val googleAuth=findViewById<TextView>(R.id.textView2)
+        val emailText = findViewById<TextView>(R.id.emailText)
+        val nameText = findViewById<TextView>(R.id.nameText)
+        emailText.text = currentUser?.email
+        nameText.text = currentUser?.displayName
+
+        /*//-----------------------------------------------------------JUST FOR TESTING------------
         val id_goo = currentUser?.uid
-        val name_goo = currentUser?.displayName
-        val email_goo = currentUser?.email
-        googleAuth.text = "user id :: $id_goo\n"+"email  :: $email_goo \n" + "name :: $name_goo";
-
-
-        //sign in w email
-        val email = intent.getStringExtra("email_id")
-        val name = intent.getStringExtra("user_id")
-        val welcometv = findViewById<TextView>(R.id.secondActivity_name)
-        welcometv.text = "Hello  :: $email \nuser :: $name"
-
-
-        // Get user Info
-     /*   var updateEditTextString = findViewById<EditText>(R.id.nameText).text.toString()
-        var setEditTextString = findViewById<EditText>(R.id.ageText).text.toString()
-        val id=auth.currentUser?.uid
-        var map = mutableMapOf<String,Any>()
-        map["name"] = updateEditTextString //name da firebase
-        map["age"] = setEditTextString
-        map["company"] = "IPCA"
-        //usar ainda phone number genero
-
-        FirebaseDatabase.getInstance().reference
-                .child("Users")
-                .child("$id")
-                .child("Info")
-                .updateChildren(map)*/
+        emailText.text = currentUser?.displayName + "\nuser id :: $id_goo\n"+"email  :: ${emailText.text} \n" + "name :: ${nameText.hint}";
+        *///---------------------------------------------------------------------------------------
 
         var phoneText = findViewById<EditText>(R.id.phoneText)
         var companyIdText = findViewById<EditText>(R.id.companyIdText)
         var companyText = findViewById<EditText>(R.id.companyText)
+
         val id=auth.currentUser?.uid
         var info = database.reference.child("Users").child("$id").child("Info")
 
@@ -78,23 +61,10 @@ class ProfileActivity : AppCompatActivity() {
                             check4null(companyIdText, map, "companyId")
                             check4null(companyText, map, "company")
                             check4null(phoneText, map, "phone")
-                        }
-                        /*else{ //creates the folder Info
-                            println("--------------NAAAAAAAAAAAO------------")
-                            var map = mutableMapOf<String,Any>()
-                            map["phone"] = ""
-                            map["companyId"] = ""
-                            map["company"] = ""
 
-                            FirebaseDatabase.getInstance().reference
-                                    .child("Users")
-                                    .child("$id")
-                                    .child("Info")
-                                    .updateChildren(map)
-                        }*/
+                        }
                     }
                 })
-
     }
 
     private fun check4null( place:EditText,  map: Map<String, Any>, key:String){
@@ -103,13 +73,6 @@ class ProfileActivity : AppCompatActivity() {
         }
         //else keeps the original hint
     }
-
-
-    fun onClickRecordActivity (view: View){
-        val intent = Intent(this, RecordActivity::class.java)
-        startActivity(intent)
-    }
-
 
     //Sign out
     fun onClickSignOutButton(view: View) {
@@ -123,7 +86,7 @@ class ProfileActivity : AppCompatActivity() {
 
         //Sign out email account
         auth.signOut()
-        val intent = Intent(this, SecondActivity_login::class.java)
+        val intent = Intent(this, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         //this 3 lines above can be substituted with onBackPressed() if we want to keep the info
@@ -131,20 +94,8 @@ class ProfileActivity : AppCompatActivity() {
 
     }
 
-    //------------real time database--------------
-  /*  fun onClickButtonSet(view:View){
-        var updateEditTextString = findViewById<EditText>(R.id.nameText).text.toString()
-        var setEditTextString = findViewById<EditText>(R.id.ageText).text.toString()
-        val id=auth.currentUser?.uid
-        var map = mutableMapOf<String,Any>()
-        map["name"] = updateEditTextString
-        map["age"] = setEditTextString
 
-        FirebaseDatabase.getInstance().reference
-            .child("Users")
-            .child("$id")
-            .setValue(map)
-    }*/
+    //get Info from database
 
     //if the user rights something it saves it in the map, if the user doesnt leaves the textbox blank it doesnt update that map[key]
     private fun check4blank( map: MutableMap<String, Any>, key:String, info:String){
@@ -169,7 +120,6 @@ class ProfileActivity : AppCompatActivity() {
         check4blank(map, "companyId", companyIdText)
         check4blank(map, "company", companyText)
 
-
         //usar ainda phone number genero
 
         FirebaseDatabase.getInstance().reference
@@ -177,55 +127,7 @@ class ProfileActivity : AppCompatActivity() {
             .child("$id")
             .child("Info")
             .updateChildren(map)
+
+        Toast.makeText(this, "Saved", Toast.LENGTH_LONG).show()
     }
-
-    fun onClickButtonDelete(view: View){
-        val id=auth.currentUser?.uid
-        FirebaseDatabase.getInstance().reference
-            .child("Users")
-            .child("$id")
-            .child("name")  //alterar
-            .removeValue()
-    }
-/*
-    fun onClickButtonReadSingle(view: View){
-        var readSingle_editText = findViewById<TextView>(R.id.read_single_textView)
-        val id=auth.currentUser?.uid
-        database.reference
-            .child("Users")
-            .child("$id")
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {
-
-                }
-
-                override fun onDataChange(p0: DataSnapshot) {
-
-                    var map = p0.value as Map<String,Any>
-                    readSingle_editText.text = map["age"].toString()
-
-                }
-            })
-    }
-
-    fun onClickButtonReadObserve(view: View){
-        var readObserve_editText = findViewById<TextView>(R.id.read_observe_textView)
-        val id=auth.currentUser?.uid
-        database.reference
-            .child("Users")
-            .child("$id")
-            .addValueEventListener(object :ValueEventListener{
-                override fun onCancelled(p0: DatabaseError) {
-
-                }
-
-                override fun onDataChange(p0: DataSnapshot) {
-
-                    var map = p0.value as Map<String,Any>
-                    readObserve_editText.text = map["age"].toString()
-
-                }
-            })
-    }
-*/
 }
