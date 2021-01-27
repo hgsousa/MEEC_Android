@@ -121,6 +121,8 @@ class RecordActivity : AppCompatActivity() {
             recordAudio.start()
             //buttonStop.isEnabled = false
             buttonStart.isEnabled = false
+            buttonPlay.isEnabled = false
+            buttonUpload.isEnabled = false
 
             timerViewer.start()
 
