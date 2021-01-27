@@ -12,9 +12,11 @@ class AboutActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_about)
 
+        supportActionBar?.title = "About Us"
+
         // About Us Title
         val pageTitle1 = findViewById<TextView>(R.id.textView4)
-        pageTitle1.text = "System Failiure Detector\n "
+        pageTitle1.text = "Trabalho de Computação Móvel\n "
 
         // Authors
         val pageTitle2 = findViewById<TextView>(R.id.textView5)
@@ -28,7 +30,7 @@ class AboutActivity : AppCompatActivity() {
         pageTitle3.text = "The purpose of this application is to record 10-second audio clips and store them in a remote database.\n\n" +
                 "So that it can be accessed by other platforms and later detection of faults in a system. After assuming the flagged, " +
         "letting the user know if the file in question is from an OK or NOK machine.\n\n" +
-                " This mobile application located and registered through the Firebase platform using email + password or Facebook" +
+                "This mobile application located and registered through the Firebase platform using email + password, Facebook" +
                 " or Google account. \n\n" +
                 "This authentication allows each user to have their files. These are corrected by the submission history and " +
                 " can later be consulted and reproduced on the mobile phone.\n"
@@ -42,7 +44,7 @@ class AboutActivity : AppCompatActivity() {
     }
     //Back button
 
-    fun onClickBack(view: View) { val intent = Intent(this , SecondActivity_login::class.java)
+    fun onClickBack(view: View) { val intent = Intent(this , LoginActivity::class.java)
         startActivity(intent)
         finish()}
 

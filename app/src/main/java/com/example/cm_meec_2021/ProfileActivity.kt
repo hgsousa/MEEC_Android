@@ -35,7 +35,7 @@ class ProfileActivity : AppCompatActivity() {
 
         val emailText = findViewById<TextView>(R.id.emailText)
         val nameText = findViewById<TextView>(R.id.nameText)
-        emailText.text = currentUser?.email
+        emailText.text = "Email: "+currentUser?.email
         nameText.text = currentUser?.displayName
 
         /*//-----------------------------------------------------------JUST FOR TESTING------------

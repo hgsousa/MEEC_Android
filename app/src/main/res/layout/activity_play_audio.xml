@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:text="Audio Listener"
         android:textAlignment="center"
-        android:textSize="35dp"
+        android:textSize="32dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

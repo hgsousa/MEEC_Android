@@ -94,7 +94,7 @@ class PlayAudioActivity : AppCompatActivity() {
                     url=map["url"].toString()
                     audioClass = map["classValue"].toString()
                     val date = p1.key?.substring(6,8)+"/"+p1.key?.substring(4,6)+"/"+p1.key?.substring(0,4)
-                    val time = p1.key?.substring(13,15)+":"+p1.key?.substring(11,13)+":"+p1.key?.substring(9,11)
+                    val time = p1.key?.substring(9,11)+":"+p1.key?.substring(11,13)+":"+p1.key?.substring(13,15)
                     audioClassTextView.text = "Date: $date"+ "\n\nTime: $time"+"\n\nClass: $audioClass"
 
                 }

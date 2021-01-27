@@ -216,9 +216,9 @@ class RecordActivity : AppCompatActivity() {
                         .child("$timestamp")
                         .updateChildren(map)
 
-                    // Só pra teste--------------------------------------------------------
+                    //
                     val urlTxt = findViewById<View>(R.id.dwnTxt) as TextView
-                    urlTxt.text = "URL: " + url.toString()
+                    urlTxt.text = "Audio File $timestamp Uploaded at to URL:\n" + url.toString()
 
             /*//use this to play the audio file from firebase by accessing the child and getting the url string with a specific filename
                     //var file = Uri.fromFile(File(uri.toString()))
@@ -265,7 +265,7 @@ class RecordActivity : AppCompatActivity() {
 
         val builder = NotificationCompat.Builder(this,CHANNEL_ID)
             .setSmallIcon(R.drawable.eec)
-            .setContentTitle("titulo fixe")
+            .setContentTitle("SFD App")
             .setContentText("Audio uploaded to Firebase")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
