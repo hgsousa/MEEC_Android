@@ -56,13 +56,6 @@ class AudioListActivity : AppCompatActivity() {
         val nameGoogle = currentUser?.displayName
         nameProfile_textView.text = "Welcome, ${nameGoogle}"
 
-        /*val nameEmail = intent.getStringExtra("email_id")
-
-        if (nameGoogle == null ){
-            nameProfile_textView.text = "Welcome, ${nameEmail}"
-        }else{
-            nameProfile_textView.text = "Welcome, ${nameGoogle}"
-        }*/
 
         rv_recyclerView = findViewById<RecyclerView>(R.id.rv_recyclerView)
         //refreshApp()

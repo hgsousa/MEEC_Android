@@ -90,8 +90,7 @@
             android:id="@+id/mainEmailAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
-            android:text="a@gmail.com" />
+            android:inputType="textEmailAddress" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- old textbox password
@@ -143,8 +142,7 @@
             android:id="@+id/mainPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:text="123456" />
+            android:inputType="textPassword"/>
     </com.google.android.material.textfield.TextInputLayout>
     <!-- old register button
     <Button

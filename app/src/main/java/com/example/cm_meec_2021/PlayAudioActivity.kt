@@ -35,13 +35,8 @@ class PlayAudioActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var database: FirebaseDatabase
     private lateinit var storage: FirebaseStorage
-    //private lateinit var reference: DatabaseReference
-    lateinit var cirprogrBar: CircularProgressBar
     lateinit var seekBar: SeekBar
-
-    //lateinit var imageShareButton: ImageButton
     val playAudio = MediaPlayer()
-    var cirprogrBarAnimation = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,10 +50,8 @@ class PlayAudioActivity : AppCompatActivity() {
 
         database = FirebaseDatabase.getInstance()
         storage = FirebaseStorage.getInstance()
-        //reference = database.getReference("Users")
         auth = FirebaseAuth.getInstance()
 
-        //cirprogrBar = findViewById(R.id.circularProgressBar)
         val imagePlayButton = findViewById<FloatingActionButton>(R.id.imagePlayButton)
 
         seekBar = findViewById<SeekBar>(R.id.seekbar)
@@ -126,11 +119,6 @@ class PlayAudioActivity : AppCompatActivity() {
             }
 
         })
-
-
-
-
-
         // ----------------------------------------------------------------------------
 
 
@@ -180,10 +168,6 @@ class PlayAudioActivity : AppCompatActivity() {
             intent.action= Intent.ACTION_SEND
             intent.putExtra(Intent.EXTRA_STREAM,fileUri)
             intent.type="text/*"
-            /*
-            intent.putExtra(Intent.EXTRA_TEXT,file)
-            intent.type="text/plain"
-            */
 
             startActivity(Intent.createChooser(intent,"Share to:"))
         }
@@ -236,6 +220,4 @@ class PlayAudioActivity : AppCompatActivity() {
             }
         },0)
     }
-
-
 }

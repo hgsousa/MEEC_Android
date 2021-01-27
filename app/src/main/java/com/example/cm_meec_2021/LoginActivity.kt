@@ -45,30 +45,9 @@ class LoginActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-        //get email from register
-        val emailReg = intent.getStringExtra("email_id")
-
-        //printHashKey(this)
     }
-/*
-    fun printHashKey(pContext: Context) {
-        try {
-            val info: PackageInfo = pContext.getPackageManager().getPackageInfo(pContext.getPackageName(), PackageManager.GET_SIGNATURES)
-            for (signature in info.signatures) {
-                val md: MessageDigest = MessageDigest.getInstance("SHA")
-                md.update(signature.toByteArray())
-                val hashKey = String(Base64.encode(md.digest(), 0))
-                println( "printHashKey() Hash Key: $hashKey")
-            }
-        } catch (e: NoSuchAlgorithmException) {
-
-        } catch (e: Exception) {
-
-        }
-    }*/
 
     //About US button
-
     fun onClickAbout(view: View) {
         val intent = Intent(this , AboutActivity::class.java)
         startActivity(intent)
@@ -142,7 +121,7 @@ class LoginActivity : AppCompatActivity() {
 
     }
     fun firebaseAuthWithFacebook(result: LoginResult?){
-        var credential = FacebookAuthProvider.getCredential(result?.accessToken?.token!!)
+        val credential = FacebookAuthProvider.getCredential(result?.accessToken?.token!!)
         auth.signInWithCredential(credential)
                 .addOnCompleteListener { task ->
             if(task.isSuccessful){
@@ -173,7 +152,7 @@ class LoginActivity : AppCompatActivity() {
         else if(!StringUtilis.validatePassword(password)) {
             Toast.makeText(this, "Password is not valid!", Toast.LENGTH_LONG).show()
             return
-        }               //confirmar se está a funcionar (se der mal o q aconetece?)
+        }
         else {
 
 
@@ -193,8 +172,8 @@ class LoginActivity : AppCompatActivity() {
                         //Send the user to the *main Activity* (SecondActivity_login) and close this one
                         val intent = Intent(this, AudioListActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        intent.putExtra("user_id", auth.currentUser!!.uid) //mudei o FirebaseAuth.getInstance()
-                        intent.putExtra("email_id", email)
+                        //intent.putExtra("user_id", auth.currentUser!!.uid) //mudei o FirebaseAuth.getInstance()
+                        //intent.putExtra("email_id", email)
                         startActivity(intent)
                         finish()
                     }

@@ -50,7 +50,7 @@ class RecordActivity : AppCompatActivity() {
     lateinit var buttonUpload:Button
     private lateinit var database: FirebaseDatabase
     private lateinit var mStorage: StorageReference;   //Firebase storage
-    lateinit var uri: Uri
+
     var path:String = Environment.getExternalStorageDirectory().toString()+"/recAndroid.mp3"
     var timestamp:String = ""
     val id = FirebaseAuth.getInstance().currentUser?.uid
